@@ -17,7 +17,7 @@ def connect(path):
 def login(username, password):
     # Should return the user type if user exists
     if re.match("^[A-Za-z0-9_]*$", username) and re.match("^[A-Za-z0-9_]*$", password):
-        cursor.execute('SELECT utype FROM users WHERE uid=? AND pwd LIKE ?;', (username, password))
+        cursor.execute('SELECT utype FROM users WHERE uid LIKE ? AND pwd=?;', (username, password))
 
         
 
