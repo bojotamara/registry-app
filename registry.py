@@ -8,18 +8,18 @@ cursor = None
 
 def connect(path):
     global connection, cursor
-        
+
     connection = sqlite3.connect(path)
     cursor = connection.cursor()
-    cursor.execute(' PRAGMA foreign_keys=ON; ')
+    cursor.execute('PRAGMA foreign_keys=ON;')
     connection.commit()
+
 
 def login(username, password):
     # Should return the user type if user exists
     if re.match("^[A-Za-z0-9_]*$", username) and re.match("^[A-Za-z0-9_]*$", password):
         cursor.execute('SELECT utype FROM users WHERE uid LIKE ? AND pwd=?;', (username, password))
 
-        
 
 def main(dbname):
     print("Welcome to the Registry!")
