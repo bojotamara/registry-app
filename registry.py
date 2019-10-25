@@ -22,30 +22,32 @@ def login(username, password):
     if re.match("^[A-Za-z0-9_]*$", username) and re.match("^[A-Za-z0-9_]*$", password):
         cursor.execute('SELECT utype FROM users WHERE uid LIKE ? AND pwd = ?;', (username, password))
         return cursor.fetchone()
-    return None
+    else:
+        return None
 
 
 def main(dbname):
     absolute_path = path.abspath(dbname)
     if not path.exists(absolute_path):
-        print("Database does not exist")
+        print("Provided .db file does not exist.")
         exit(1)
     connect(absolute_path)
 
     print("Welcome to the Registry!")
 
+    print("Please login.")
     username = input("Username: ")
     password = getpass("Password: ")
 
     user_data = login(username, password)
     if user_data is None:
-        print("Login failed")
+        print("Login failed.")
     elif user_data[0] == "a":
         registry_agents_main()
     elif user_data[0] == "o":
         traffic_officers_main()
     else:
-        print("Database error")
+        print("Database corrupted: utype is not valid.")
         exit(1)
 
     connection.commit()
@@ -54,6 +56,7 @@ def main(dbname):
 
 def registry_agents_main():
     while True:
+        print("Welcome back, registry agent!")
         print("1. Register a birth")
         print("2. Register a marriage")
         print("3. Logout")
@@ -66,11 +69,12 @@ def registry_agents_main():
         elif choice == "3":
             break
         else:
-            print("Invalid choice")
+            print("Invalid choice.")
 
 
 def traffic_officers_main():
     while True:
+        print("Welcome back, traffic officer!")
         print("1. Issue a ticket")
         print("2. Find a car owner")
         print("3. Logout")
@@ -83,7 +87,7 @@ def traffic_officers_main():
         elif choice == "3":
             break
         else:
-            print("Invalid choice")
+            print("Invalid choice.")
 
 
 if __name__ == "__main__":
