@@ -1,6 +1,5 @@
 from getpass import getpass
 from os import path
-import hashlib
 import sqlite3
 import sys
 import re
@@ -9,37 +8,21 @@ connection = None
 cursor = None
 
 
-def hash_pass(username, password):
-    """
-    Hash a password, using username as salt.
-    """
-    salted = password + "$" + username
-
-    m = hashlib.sha512()
-    m.update(salted.encode("utf-8"))
-    print(m.hexdigest())
-    return m.hexdigest()
-
-
-def connect(path):
+def connect(absolute_path):
     global connection, cursor
 
-    connection = sqlite3.connect(path)
+    connection = sqlite3.connect(absolute_path)
     cursor = connection.cursor()
     cursor.execute('PRAGMA foreign_keys=ON;')
     connection.commit()
-
-    connection.create_function("hash_pass", 2, hash_pass)
 
 
 def login(username, password):
     # Should return the user type if user exists
     if re.match("^[A-Za-z0-9_]*$", username) and re.match("^[A-Za-z0-9_]*$", password):
-        hash_pass(username, password)
-        cursor.execute(
-            'SELECT utype FROM users WHERE uid LIKE ? AND pwd = hash_pass(?, ?);',
-            (username, username, password)
-        )
+        cursor.execute('SELECT utype FROM users WHERE uid LIKE ? AND pwd = ?;', (username, password))
+        return cursor.fetchone()
+    return None
 
 
 def main(dbname):
@@ -51,15 +34,33 @@ def main(dbname):
 
     print("Welcome to the Registry!")
 
+    username = input("Username: ")
+    password = getpass("Password: ")
+
+    user_data = login(username, password)
+    if user_data is None:
+        print("Login failed")
+    elif user_data[0] == "a":
+        registry_agents_main()
+    elif user_data[0] == "o":
+        traffic_officers_main()
+    else:
+        print("Database error")
+        exit(1)
+
+    connection.commit()
+    connection.close()
+
+
+def registry_agents_main():
     while True:
-        print("")
-        print("1. Login")
-        print("2. Register")
-        print("3. Exit")
+        print("1. Register a birth")
+        print("2. Register a marriage")
+        print("3. Logout")
         choice = input("Please chose an option: ")
 
         if choice == "1":
-            main_login()
+            print("TODO: Not implemented")
         elif choice == "2":
             print("TODO: Not implemented")
         elif choice == "3":
@@ -67,15 +68,22 @@ def main(dbname):
         else:
             print("Invalid choice")
 
-    connection.commit()
-    connection.close()
 
+def traffic_officers_main():
+    while True:
+        print("1. Issue a ticket")
+        print("2. Find a car owner")
+        print("3. Logout")
+        choice = input("Please chose an option: ")
 
-def main_login():
-    username = input("Username: ")
-    password = input("Password: ")  # getpass("Password: ")
-
-    login(username, password)
+        if choice == "1":
+            print("TODO: Not implemented")
+        elif choice == "2":
+            print("TODO: Not implemented")
+        elif choice == "3":
+            break
+        else:
+            print("Invalid choice")
 
 
 if __name__ == "__main__":

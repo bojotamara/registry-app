@@ -93,8 +93,8 @@ create table payments (
   foreign key (tno) references tickets
 );
 create table users (
-  uid		char(32),
-  pwd		char(128),
+  uid		char(8),
+  pwd		char(8),
   utype		char(1),	-- 'a' for agents, 'o' for officers
   fname		char(12),
   lname		char(12), 
