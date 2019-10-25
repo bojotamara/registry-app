@@ -1,5 +1,5 @@
 from getpass import getpass
-from os.path import abspath
+from os import path
 import hashlib
 import sqlite3
 import sys
@@ -43,10 +43,13 @@ def login(username, password):
 
 
 def main(dbname):
-    print("Welcome to the Registry!")
+    absolute_path = path.abspath(dbname)
+    if not path.exists(absolute_path):
+        print("Database does not exist")
+        exit(1)
+    connect(absolute_path)
 
-    path = abspath(dbname)
-    connect(path)
+    print("Welcome to the Registry!")
 
     while True:
         print("")
