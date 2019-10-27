@@ -197,17 +197,18 @@ def traffic_officers_find_car_owner():
     cursor.execute('''
         SELECT v.vin, v.make, v.model, v.year, v.color, r.plate
         FROM vehicles v, registrations r
-        WHERE v.vin = r.vin AND (
-              v.make LIKE ? OR
-              v.model LIKE ? OR
-              v.year LIKE ? OR
-              v.color LIKE ? OR
+        WHERE v.vin = r.vin AND
+              v.make LIKE ? AND
+              v.model LIKE ? AND
+              v.year LIKE ? AND
+              v.color LIKE ? AND
               r.plate LIKE ?
-        )
     ''', (make, model, year, color, plate))
     rows = cursor.fetchall()
 
-    if len(rows) > 4:
+    if len(rows) == 0:
+        print("No result.")
+    elif len(rows) > 4:
         for i in range(len(rows)):
             print(str(i) + ". " + "|".join(str(elem) for elem in rows[i][1:]))
 
@@ -216,16 +217,26 @@ def traffic_officers_find_car_owner():
             print("Invalid choice.")
             return
 
-        traffic_officers_find_car_owner_print_row(rows[choice][0])
+        traffic_officers_find_car_owner_print_row(rows[choice])
     else:
         for row in rows:
-            traffic_officers_find_car_owner_print_row(row[0])
+            traffic_officers_find_car_owner_print_row(row)
 
 
-def traffic_officers_find_car_owner_print_row(vin):
+def traffic_officers_find_car_owner_print_row(row):
     global cursor
 
-    print(vin)
+    cursor.execute('''
+        SELECT regdate, expiry, fname, lname
+        FROM registrations
+        WHERE vin = ?
+        ORDER BY regdate DESC
+        LIMIT 1;
+    ''', (row[0],))
+    full_row = cursor.fetchone()
+
+    print("|".join(str(elem) for elem in row[1:]), end="|")
+    print("|".join(str(elem) for elem in full_row))
 
 
 if __name__ == "__main__":
