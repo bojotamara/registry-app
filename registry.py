@@ -1,3 +1,4 @@
+from datetime import datetime
 from getpass import getpass
 from os import path
 import sqlite3
@@ -26,6 +27,24 @@ def login(username, password):
         return None
 
 
+def read_int(message):
+    while True:
+        try:
+            return int(input(message))
+        except ValueError:
+            print("Try again.")
+
+
+def read_date(message):
+    while True:
+        user_input = input(message)
+        try:
+            datetime.strptime(user_input, "%Y-%m-%d")
+            return user_input
+        except ValueError:
+            print("Try again.")
+
+
 def main(dbname):
     absolute_path = path.abspath(dbname)
     if not path.exists(absolute_path):
@@ -42,7 +61,7 @@ def main(dbname):
     user_data = login(username, password)
     if user_data is None:
         print("Login failed.")
-        exit(1)
+        exit(0)
     elif user_data[0] == "a":
         registry_agents_main()
     elif user_data[0] == "o":
@@ -112,7 +131,7 @@ def traffic_officers_issue_ticket():
 
     print()
     print("Issuing a ticket.")
-    registration_number = input("Registration number: ")
+    registration_number = read_int("Registration number: ")
 
     cursor.execute('''
         SELECT r.fname, r.lname, v.make, v.model, v.year, v.color
@@ -126,11 +145,10 @@ def traffic_officers_issue_ticket():
         return
     print("|".join(str(elem) for elem in row))
 
-    violation_date = input("Violation date: ")
+    violation_date = read_date("Violation date: ")
     violation_text = input("Violation text: ")
-    fine_amount = input("Fine amount: ")
+    fine_amount = read_int("Fine amount: ")
 
-    # TODO: Error checking
     cursor.execute(
         '''INSERT INTO tickets VALUES ((SELECT max(tno) + 1 FROM tickets), ?, ?, ?, ?);''',
         (registration_number, fine_amount, violation_text, violation_date)
