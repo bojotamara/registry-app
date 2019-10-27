@@ -42,6 +42,7 @@ def main(dbname):
     user_data = login(username, password)
     if user_data is None:
         print("Login failed.")
+        exit(1)
     elif user_data[0] == "a":
         registry_agents_main()
     elif user_data[0] == "o":
@@ -50,16 +51,23 @@ def main(dbname):
         print("Database corrupted: utype is not valid.")
         exit(1)
 
+    print()
+    print("See you next time!")
     connection.commit()
     connection.close()
 
 
 def registry_agents_main():
     while True:
+        print()
         print("Welcome back, registry agent!")
         print("1. Register a birth")
         print("2. Register a marriage")
-        print("3. Logout")
+        print("3. Renew a vehicle registration")
+        print("4. Process a bill of sale")
+        print("5. Process a payment")
+        print("6. Get a driver abstract")
+        print("7. Logout")
         choice = input("Please chose an option: ")
 
         if choice == "1":
@@ -67,6 +75,14 @@ def registry_agents_main():
         elif choice == "2":
             print("TODO: Not implemented")
         elif choice == "3":
+            print("TODO: Not implemented")
+        elif choice == "4":
+            print("TODO: Not implemented")
+        elif choice == "5":
+            print("TODO: Not implemented")
+        elif choice == "6":
+            print("TODO: Not implemented")
+        elif choice == "7":
             break
         else:
             print("Invalid choice.")
@@ -74,6 +90,7 @@ def registry_agents_main():
 
 def traffic_officers_main():
     while True:
+        print()
         print("Welcome back, traffic officer!")
         print("1. Issue a ticket")
         print("2. Find a car owner")
@@ -81,13 +98,44 @@ def traffic_officers_main():
         choice = input("Please chose an option: ")
 
         if choice == "1":
-            print("TODO: Not implemented")
+            traffic_officers_issue_ticket()
         elif choice == "2":
             print("TODO: Not implemented")
         elif choice == "3":
             break
         else:
             print("Invalid choice.")
+
+
+def traffic_officers_issue_ticket():
+    global connection, cursor
+
+    print()
+    print("Issuing a ticket.")
+    registration_number = input("Registration number: ")
+
+    cursor.execute('''
+        SELECT r.fname, r.lname, v.make, v.model, v.year, v.color
+        FROM registrations r, vehicles v
+        WHERE r.regno = ? AND r.vin = v.vin;
+    ''', (registration_number,))
+    row = cursor.fetchone()
+
+    if row is None:
+        print("Record not found.")
+        return
+    print("|".join(str(elem) for elem in row))
+
+    violation_date = input("Violation date: ")
+    violation_text = input("Violation text: ")
+    fine_amount = input("Fine amount: ")
+
+    # TODO: Error checking
+    cursor.execute(
+        '''INSERT INTO tickets VALUES ((SELECT max(tno) + 1 FROM tickets), ?, ?, ?, ?);''',
+        (registration_number, fine_amount, violation_text, violation_date)
+    )
+    connection.commit()
 
 
 if __name__ == "__main__":
