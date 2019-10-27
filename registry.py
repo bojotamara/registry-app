@@ -89,7 +89,7 @@ def registry_agents_main():
         print("5. Process a payment")
         print("6. Get a driver abstract")
         print("7. Logout")
-        choice = input("Please chose an option: ")
+        choice = input("Please choose an option: ")
 
         if choice == "1":
             print("TODO: Not implemented")
@@ -116,7 +116,7 @@ def traffic_officers_main():
         print("1. Issue a ticket")
         print("2. Find a car owner")
         print("3. Logout")
-        choice = input("Please chose an option: ")
+        choice = input("Please choose an option: ")
 
         if choice == "1":
             traffic_officers_issue_ticket()
@@ -177,7 +177,7 @@ def traffic_officers_find_car_owner():
         print("4. Enter color")
         print("5. Enter plate")
         print("6. Execute search")
-        choice = input("Please chose an option: ")
+        choice = input("Please choose an option: ")
 
         if choice == "1":
             make = input("Please enter make: ")
@@ -194,7 +194,38 @@ def traffic_officers_find_car_owner():
         else:
             print("Invalid choice.")
 
-    print(make, model, year, color, plate)
+    cursor.execute('''
+        SELECT v.vin, v.make, v.model, v.year, v.color, r.plate
+        FROM vehicles v, registrations r
+        WHERE v.vin = r.vin AND (
+              v.make LIKE ? OR
+              v.model LIKE ? OR
+              v.year LIKE ? OR
+              v.color LIKE ? OR
+              r.plate LIKE ?
+        )
+    ''', (make, model, year, color, plate))
+    rows = cursor.fetchall()
+
+    if len(rows) > 4:
+        for i in range(len(rows)):
+            print(str(i) + ". " + "|".join(str(elem) for elem in rows[i][1:]))
+
+        choice = read_int("Please choose an option: ")
+        if choice < 0 or choice >= len(rows):
+            print("Invalid choice.")
+            return
+
+        traffic_officers_find_car_owner_print_row(rows[choice][0])
+    else:
+        for row in rows:
+            traffic_officers_find_car_owner_print_row(row[0])
+
+
+def traffic_officers_find_car_owner_print_row(vin):
+    global cursor
+
+    print(vin)
 
 
 if __name__ == "__main__":
