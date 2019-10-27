@@ -35,9 +35,11 @@ def read_int(message):
             print("Try again.")
 
 
-def read_date(message):
+def read_date(message, optional=False):
     while True:
         user_input = input(message)
+        if user_input == "" and optional:
+            return None
         try:
             datetime.strptime(user_input, "%Y-%m-%d")
             return user_input
@@ -119,7 +121,7 @@ def traffic_officers_main():
         if choice == "1":
             traffic_officers_issue_ticket()
         elif choice == "2":
-            print("TODO: Not implemented")
+            traffic_officers_find_car_owner()
         elif choice == "3":
             break
         else:
@@ -131,7 +133,7 @@ def traffic_officers_issue_ticket():
 
     print()
     print("Issuing a ticket.")
-    registration_number = read_int("Registration number: ")
+    registration_number = read_int("Please enter registration number: ")
 
     cursor.execute('''
         SELECT r.fname, r.lname, v.make, v.model, v.year, v.color
@@ -145,15 +147,54 @@ def traffic_officers_issue_ticket():
         return
     print("|".join(str(elem) for elem in row))
 
-    violation_date = read_date("Violation date: ")
-    violation_text = input("Violation text: ")
-    fine_amount = read_int("Fine amount: ")
+    violation_date = read_date("Please enter violation date: ", optional=True)
+    violation_text = input("Please enter violation text: ")
+    fine_amount = read_int("Please enter fine amount: ")
 
     cursor.execute(
-        '''INSERT INTO tickets VALUES ((SELECT max(tno) + 1 FROM tickets), ?, ?, ?, ?);''',
+        '''INSERT INTO tickets VALUES ((SELECT max(tno) + 1 FROM tickets), ?, ?, ?, IFNULL(?, DATE('now')));''',
         (registration_number, fine_amount, violation_text, violation_date)
     )
     connection.commit()
+
+
+def traffic_officers_find_car_owner():
+    global cursor
+
+    print()
+    print("Find a car owner.")
+
+    make = "%"
+    model = "%"
+    year = "%"
+    color = "%"
+    plate = "%"
+
+    while True:
+        print("1. Enter make")
+        print("2. Enter model")
+        print("3. Enter year")
+        print("4. Enter color")
+        print("5. Enter plate")
+        print("6. Execute search")
+        choice = input("Please chose an option: ")
+
+        if choice == "1":
+            make = input("Please enter make: ")
+        elif choice == "2":
+            model = input("Please enter model: ")
+        elif choice == "3":
+            year = input("Please enter year: ")
+        elif choice == "4":
+            color = input("Please enter color: ")
+        elif choice == "5":
+            plate = input("Please enter plate: ")
+        elif choice == "6":
+            break
+        else:
+            print("Invalid choice.")
+
+    print(make, model, year, color, plate)
 
 
 if __name__ == "__main__":
