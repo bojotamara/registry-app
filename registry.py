@@ -279,14 +279,14 @@ def registry_agent_register_birth(user_data):
     )
     city = cursor.fetchone()
 
-    regno = uuid.uuid1()
-
     mother = None
     father = None
 
     def getParent(parent: bool = True):  # mother is true, father is false
+        global mother, father
+
         cursor.execute(
-            """SELECT fname, lname, address
+            """SELECT fname, lname, address, phone
         FROM persons
         WHERE
         fname=?
@@ -315,19 +315,17 @@ def registry_agent_register_birth(user_data):
         add_person(fname=father_fname, lname=father_lname)
         getParent(False)
 
-    print("MOTHER: ", mother)
-    address = mother[4]
+    address = mother[2]
     if addreess is None:
         address = input("Enter the baby's address: ")
 
-    phone = mother[5]
+    phone = mother[3]
     if phone is None:
         phone = input("Enter the baby's phone number: ")
 
     cursor.execute(
         """INSERT INTO births
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-        regno,
+            VALUES((SELECT MAX(regno) + 1 FROM births), ?, ?, ?, ?, ?, ?, ?, ?)""",
         first_name,
         last_name,
         registration_date,
@@ -365,7 +363,10 @@ def add_person(
     if phone is None:
         phone = input(f"{text} phone number: ")
 
-    # TODO values other then fname, lname can be set to null if not provided.
+    for x in (bdate, bplace, address, phone):
+        if x == "":
+            x=None;
+
     cursor.execute(
         """INSERT INTO PERSONS
                         VALUES(?, ?, ?, ?, ?, ?)""",
