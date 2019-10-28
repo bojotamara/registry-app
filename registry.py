@@ -14,14 +14,17 @@ def connect(absolute_path):
 
     connection = sqlite3.connect(absolute_path)
     cursor = connection.cursor()
-    cursor.execute('PRAGMA foreign_keys=ON;')
+    cursor.execute("PRAGMA foreign_keys=ON;")
     connection.commit()
 
 
 def login(username, password):
     # Should return the user type if user exists
     if re.match("^[A-Za-z0-9_]*$", username) and re.match("^[A-Za-z0-9_]*$", password):
-        cursor.execute('SELECT utype FROM users WHERE uid LIKE ? AND pwd = ?;', (username, password))
+        cursor.execute(
+            "SELECT utype FROM users WHERE uid LIKE ? AND pwd = ?;",
+            (username, password),
+        )
         return cursor.fetchone()
     else:
         return None
@@ -135,11 +138,14 @@ def traffic_officers_issue_ticket():
     print("Issuing a ticket.")
     registration_number = read_int("Please enter registration number: ")
 
-    cursor.execute('''
+    cursor.execute(
+        """
         SELECT r.fname, r.lname, v.make, v.model, v.year, v.color
         FROM registrations r, vehicles v
         WHERE r.regno = ? AND r.vin = v.vin;
-    ''', (registration_number,))
+    """,
+        (registration_number,),
+    )
     row = cursor.fetchone()
 
     if row is None:
@@ -152,8 +158,8 @@ def traffic_officers_issue_ticket():
     fine_amount = read_int("Please enter fine amount: ")
 
     cursor.execute(
-        '''INSERT INTO tickets VALUES ((SELECT max(tno) + 1 FROM tickets), ?, ?, ?, IFNULL(?, DATE('now')));''',
-        (registration_number, fine_amount, violation_text, violation_date)
+        """INSERT INTO tickets VALUES ((SELECT max(tno) + 1 FROM tickets), ?, ?, ?, IFNULL(?, DATE('now')));""",
+        (registration_number, fine_amount, violation_text, violation_date),
     )
     connection.commit()
 
@@ -194,7 +200,8 @@ def traffic_officers_find_car_owner():
         else:
             print("Invalid choice.")
 
-    cursor.execute('''
+    cursor.execute(
+        """
         SELECT v.vin, v.make, v.model, v.year, v.color, r.plate
         FROM vehicles v, registrations r
         WHERE v.vin = r.vin AND
@@ -203,7 +210,9 @@ def traffic_officers_find_car_owner():
               v.year LIKE ? AND
               v.color LIKE ? AND
               r.plate LIKE ?
-    ''', (make, model, year, color, plate))
+    """,
+        (make, model, year, color, plate),
+    )
     rows = cursor.fetchall()
 
     if len(rows) == 0:
@@ -226,13 +235,16 @@ def traffic_officers_find_car_owner():
 def traffic_officers_find_car_owner_print_row(row):
     global cursor
 
-    cursor.execute('''
+    cursor.execute(
+        """
         SELECT regdate, expiry, fname, lname
         FROM registrations
         WHERE vin = ?
         ORDER BY regdate DESC
         LIMIT 1;
-    ''', (row[0],))
+    """,
+        (row[0],),
+    )
     full_row = cursor.fetchone()
 
     print("|".join(str(elem) for elem in row[1:]), end="|")
