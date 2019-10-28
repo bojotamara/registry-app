@@ -8,4 +8,5 @@ lint:
 	black --check --diff .
 	flake8
 
-format: black .
+format: 
+	black .
