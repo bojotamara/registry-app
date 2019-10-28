@@ -290,10 +290,11 @@ def registry_agent_register_birth(user_data):
         fname=?
         AND
         lname=?
-        """,(
-            mother_fname if parent else father_fname,
-            mother_lname if parent else father_lname,
-            )
+        """,
+            (
+                mother_fname if parent else father_fname,
+                mother_lname if parent else father_lname,
+            ),
         )
         if parent:
             mother = cursor.fetchone()
@@ -365,13 +366,7 @@ def add_person(
     cursor.execute(
         """INSERT INTO PERSONS
                         VALUES(?, ?, ?, ?, ?, ?)""",
-        (fname,
-        lname,
-        bdate,
-        bplace,
-        address,
-        phone,
-        )
+        (fname, lname, bdate, bplace, address, phone),
     )
     cursor.commit()
 
