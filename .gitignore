@@ -132,4 +132,6 @@ dmypy.json
 
 # other
 tags
-
+test
+test.py
+registry.db
