@@ -277,7 +277,7 @@ def registry_agent_register_birth(user_data):
     WHERE uid = ?""",
         user_data[0],
     )
-    (city, ) = cursor.fetchone()
+    (city,) = cursor.fetchone()
 
     mother = None
     father = None
@@ -323,22 +323,22 @@ def registry_agent_register_birth(user_data):
     if phone is None:
         phone = input("Enter the baby's phone number: ")
 
-
     add_person(first_name, last_name, "", "", "", "")
 
     cursor.execute(
         """INSERT INTO births
             VALUES((SELECT MAX(regno) + 1 FROM births), ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-        (first_name,
-        last_name,
-        registration_date,
-        city,
-        gender,
-        father[0],
-        father[1],
-        mother[0],
-        mother[1],
-        )
+        (
+            first_name,
+            last_name,
+            registration_date,
+            city,
+            gender,
+            father[0],
+            father[1],
+            mother[0],
+            mother[1],
+        ),
     )
     connection.commit()
 
@@ -369,7 +369,7 @@ def add_person(
 
     for x in (bdate, bplace, address, phone):
         if x == "":
-            x="NULL";
+            x = "NULL"
 
     cursor.execute(
         """INSERT INTO PERSONS
