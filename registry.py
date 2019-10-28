@@ -5,6 +5,8 @@ import sqlite3
 import sys
 import re
 
+import uuid
+
 connection = None
 cursor = None
 
@@ -68,7 +70,7 @@ def main(dbname):
         print("Login failed.")
         exit(0)
     elif user_data[0] == "a":
-        registry_agents_main()
+        registry_agents_main(user_data)
     elif user_data[0] == "o":
         traffic_officers_main()
     else:
@@ -81,7 +83,7 @@ def main(dbname):
     connection.close()
 
 
-def registry_agents_main():
+def registry_agents_main(user_data):
     while True:
         print()
         print("Welcome back, registry agent!")
@@ -95,7 +97,7 @@ def registry_agents_main():
         choice = input("Please choose an option: ")
 
         if choice == "1":
-            print("TODO: Not implemented")
+            registry_agent_register_birth(user_data);
         elif choice == "2":
             print("TODO: Not implemented")
         elif choice == "3":
@@ -249,6 +251,97 @@ def traffic_officers_find_car_owner_print_row(row):
 
     print("|".join(str(elem) for elem in row[1:]), end="|")
     print("|".join(str(elem) for elem in full_row))
+
+def registry_agent_register_birth(user_data):
+    global cursor;
+    
+    print(user_data)
+    print("Registering a birth")
+
+    first_name = input("First name: ")
+    last_name = input("Last name: ")
+    gender = input("Gender: ")
+    birth_date = read_date("Birth date: ")
+    birth_place = input("Birth place: ")
+    mother_fname = input("Mother first name: ")
+    mother_lname = input("Mother last name: ")
+    father_fname = input("Father first name: ")
+    father_lname = input("Father 2 last name: ")
+    registration_date = date.today().strftime("%Y-%m-%d");
+    
+    cursor.execute("""SELECT city FROM users
+    WHERE uid = ?""", user_data[0])
+    city = cursor.fetchone();
+
+    regno = uuid.uuid();
+    
+    mother = None;
+    father = None;
+    def getParent(parent: bool = True): # mother is true, father is false
+        cursor.execute("""SELECT fname, lname, address
+        FROM persons
+        WHERE
+        fname=?
+        AND
+        lname=?
+        """, mother_fname if parent else father_fname, mother_lname if parent else father_lname)
+        if parent:
+            mother = cursor.fetchone();
+        else:
+            father = cursor.fetchone();
+    
+    getParent(True)
+    if mother is None:
+        print("Mother does not exist in db, please enter her details: ")
+        add_person(fname=mother_fname, lname=mother_lname);
+        getMother();
+
+    getParent(False)
+    if father is None:
+        print("Father does not exist in db, please enter his details: ")
+        add_person(fname=father_fname, lname=father_lname)
+        getFather();
+
+    address = mother[4];
+    if addreess is None:
+        address = input("Enter the baby's address: ")
+
+    phone = mother[5];
+    if phone is None:
+        phone = input("Enter the baby's phone number: ");
+
+    
+    cursor.execute("""INSERT INTO births
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", regno, first_name, last_name, registration_date, city, gender, father[0], father[1], mother[0], mother[1]);
+    cursor.commit()
+
+    
+
+def add_person(fname: str =None, lname: str =None, bdate:str =None, bplace: str =None, address: str =None, phone: str =None):
+    global cursor; 
+
+    text = "Enter the person's";
+    if fname is None:
+        fname=input(f"{text} first name: ")
+    if lname is None:
+        lname=input(f"{text} last name: ")
+    if bdate is None:
+        bdate=input(f"{text} birth date: ")
+    if bplace is None:
+        bplace=input(f"{text} birth place: ")
+    if address is None:
+        address=input(f"{text} address: ")
+    if phone is None:
+        phone=input(f"{text} phone number: ")
+
+    # TODO values other then fname, lname can be set to null if not provided.
+    cursor.execute("""INSERT INTO PERSONS
+                        VALUES(?, ?, ?, ?, ?, ?)""", fname, lname, bdate, bplace, address, phone)
+    cursor.commit()
+
+
+
+
 
 
 if __name__ == "__main__":
