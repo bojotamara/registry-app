@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from datetime import datetime, date
 from getpass import getpass
 from os import path
@@ -254,7 +256,7 @@ def traffic_officers_find_car_owner_print_row(row):
 
 
 def registry_agent_register_birth(user_data):
-    global cursor
+    global cursor, connection
 
     print(user_data)
     print("Registering a birth")
@@ -267,7 +269,7 @@ def registry_agent_register_birth(user_data):
     mother_fname = input("Mother first name: ")
     mother_lname = input("Mother last name: ")
     father_fname = input("Father first name: ")
-    father_lname = input("Father 2 last name: ")
+    father_lname = input("Father last name: ")
     registration_date = date.today().strftime("%Y-%m-%d")
 
     cursor.execute(
@@ -313,6 +315,7 @@ def registry_agent_register_birth(user_data):
         add_person(fname=father_fname, lname=father_lname)
         getParent(False)
 
+    print("MOTHER: ", mother)
     address = mother[4]
     if addreess is None:
         address = input("Enter the baby's address: ")
@@ -335,7 +338,7 @@ def registry_agent_register_birth(user_data):
         mother[0],
         mother[1],
     )
-    cursor.commit()
+    connection.commit()
 
 
 def add_person(
@@ -346,7 +349,7 @@ def add_person(
     address: str = None,
     phone: str = None,
 ):
-    global cursor
+    global cursor, connection
 
     text = "Enter the person's"
     if fname is None:
@@ -368,7 +371,7 @@ def add_person(
                         VALUES(?, ?, ?, ?, ?, ?)""",
         (fname, lname, bdate, bplace, address, phone),
     )
-    cursor.commit()
+    connection.commit()
 
 
 if __name__ == "__main__":
