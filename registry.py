@@ -303,13 +303,13 @@ def registry_agent_register_birth(user_data):
     if mother is None:
         print("Mother does not exist in db, please enter her details: ")
         add_person(fname=mother_fname, lname=mother_lname)
-        getMother()
+        getParent(True)
 
     getParent(False)
     if father is None:
         print("Father does not exist in db, please enter his details: ")
         add_person(fname=father_fname, lname=father_lname)
-        getFather()
+        getParent(False)
 
     address = mother[4]
     if addreess is None:
