@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from getpass import getpass
 from os import path
 import sqlite3
@@ -277,7 +277,7 @@ def registry_agent_register_birth(user_data):
     )
     city = cursor.fetchone()
 
-    regno = uuid.uuid()
+    regno = uuid.uuid1()
 
     mother = None
     father = None
@@ -290,9 +290,10 @@ def registry_agent_register_birth(user_data):
         fname=?
         AND
         lname=?
-        """,
+        """,(
             mother_fname if parent else father_fname,
             mother_lname if parent else father_lname,
+            )
         )
         if parent:
             mother = cursor.fetchone()
@@ -364,12 +365,13 @@ def add_person(
     cursor.execute(
         """INSERT INTO PERSONS
                         VALUES(?, ?, ?, ?, ?, ?)""",
-        fname,
+        (fname,
         lname,
         bdate,
         bplace,
         address,
         phone,
+        )
     )
     cursor.commit()
 
