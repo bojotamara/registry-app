@@ -76,7 +76,7 @@ def registry_agents_main(username):
         print("4. Process a bill of sale")
         print("5. Process a payment")
         print("6. Get a driver abstract")
-        print("7. Logout")
+        print("7. Logout and exit")
         choice = input("Please choose an option: ")
 
         if choice == "1":
@@ -104,7 +104,7 @@ def traffic_officers_main():
         print("Welcome back, traffic officer!")
         print("1. Issue a ticket")
         print("2. Find a car owner")
-        print("3. Logout")
+        print("3. Logout and exit")
         choice = input("Please choose an option: ")
 
         if choice == "1":
