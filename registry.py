@@ -54,6 +54,19 @@ def read_date(message, optional=False):
             print("Try again.")
 
 
+def read_string(message, optional=False):
+    if optional:
+        message += " (optional)"
+    while True:
+        user_input = input(message)
+        if user_input == "" and optional:
+            return None
+        elif user_input != "":
+            return user_input
+        else:
+            print("Input required.")
+
+
 def main(dbname):
     absolute_path = path.abspath(dbname)
     if not path.exists(absolute_path):
@@ -101,7 +114,7 @@ def registry_agents_main(user_data):
         if choice == "1":
             registry_agent_register_birth(user_data)
         elif choice == "2":
-            print("TODO: Not implemented")
+            registry_agent_register_marriage(user_data)
         elif choice == "3":
             print("TODO: Not implemented")
         elif choice == "4":
@@ -255,26 +268,42 @@ def traffic_officers_find_car_owner_print_row(row):
     print("|".join(str(elem) for elem in full_row))
 
 
+def get_person(fname, lname):
+    global cursor
+    cursor.execute(
+        """
+        SELECT *
+        FROM persons
+        WHERE
+        fname LIKE ?
+        AND
+        lname LIKE ?
+        """,
+        (fname, lname)
+    )
+    return cursor.fetchone()
+
+
 def registry_agent_register_birth(user_data):
     global cursor, connection
 
     print(user_data)
     print("Registering a birth")
 
-    first_name = input("First name: ")
-    last_name = input("Last name: ")
-    gender = input("Gender: ")
+    first_name = read_string("First name: ")
+    last_name = read_string("Last name: ")
+    gender = read_string("Gender: ")
     birth_date = read_date("Birth date: ")
-    birth_place = input("Birth place: ")
-    mother_fname = input("Mother first name: ")
-    mother_lname = input("Mother last name: ")
-    father_fname = input("Father first name: ")
-    father_lname = input("Father last name: ")
+    birth_place = read_string("Birth place: ")
+    mother_fname = read_string("Mother first name: ")
+    mother_lname = read_string("Mother last name: ")
+    father_fname = read_string("Father first name: ")
+    father_lname = read_string("Father last name: ")
     registration_date = date.today().strftime("%Y-%m-%d")
 
     cursor.execute(
         """SELECT city FROM users
-    WHERE uid = ?""",
+        WHERE uid LIKE ?""",
         user_data[0],
     )
     (city,) = cursor.fetchone()
@@ -282,46 +311,20 @@ def registry_agent_register_birth(user_data):
     mother = None
     father = None
 
-    def getParent(parent: bool = True):  # mother is true, father is false
-        nonlocal mother, father
-
-        cursor.execute(
-            """SELECT fname, lname, address, phone
-        FROM persons
-        WHERE
-        fname=?
-        AND
-        lname=?
-        """,
-            (
-                mother_fname if parent else father_fname,
-                mother_lname if parent else father_lname,
-            ),
-        )
-        if parent:
-            mother = cursor.fetchone()
-        else:
-            father = cursor.fetchone()
-
-    getParent(True)
+    mother = get_person(mother_fname, mother_lname)
     if mother is None:
         print("Mother does not exist in db, please enter her details: ")
         add_person(fname=mother_fname, lname=mother_lname)
-        getParent(True)
+        mother = get_person(mother_fname, mother_lname)
 
-    getParent(False)
+    father = get_person(father_fname, father_lname)
     if father is None:
         print("Father does not exist in db, please enter his details: ")
         add_person(fname=father_fname, lname=father_lname)
-        getParent(False)
+        father = get_person(father_fname, father_lname)
 
-    address = mother[2]
-    if address is None:
-        address = input("Enter the baby's address: ")
-
-    phone = mother[3]
-    if phone is None:
-        phone = input("Enter the baby's phone number: ")
+    address = mother[4]
+    phone = mother[5]
 
     add_person(first_name, last_name, "", "", "", "")
 
