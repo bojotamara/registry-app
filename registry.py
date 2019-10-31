@@ -43,9 +43,8 @@ def read_int(message):
 
 
 def read_date(message, optional=False):
-    #TODO: make this nicer
     if optional:
-        message += "(optional) "
+        message = "(Optional) " + message
     while True:
         user_input = input(message)
         if user_input == "" and optional:
@@ -60,7 +59,7 @@ def read_date(message, optional=False):
 def read_string(message, optional=False):
     #TODO: make this nicer
     if optional:
-        message += "(optional) "
+        message = "(Optional) " + message
     while True:
         user_input = input(message)
         if user_input == "" and optional:
@@ -425,7 +424,7 @@ def registry_agent_renew_vehicle_registration():
         SET expiry=?
         WHERE regno=?;
         """,
-        (expiry_date, registration_number,)
+        (expiry_date, registration_number)
     )
     connection.commit()
 
