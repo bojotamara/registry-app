@@ -57,7 +57,6 @@ def read_date(message, optional=False):
 
 
 def read_string(message, optional=False):
-    #TODO: make this nicer
     if optional:
         message = "(Optional) " + message
     while True:
