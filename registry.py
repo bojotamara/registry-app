@@ -120,7 +120,7 @@ def registry_agents_main(username):
         elif choice == "2":
             registry_agent_register_marriage(username)
         elif choice == "3":
-            print("TODO: Not implemented")
+            registry_agent_renew_vehicle_registration()
         elif choice == "4":
             print("TODO: Not implemented")
         elif choice == "5":
@@ -391,6 +391,45 @@ def registry_agent_register_marriage(username):
         )
     )
     connection.commit()
+
+def registry_agent_renew_vehicle_registration():
+    global cursor, connection
+
+    registration_number = read_int("Please enter the vehicle registration number: ")
+    cursor.execute(
+        """
+        SELECT expiry
+        FROM registrations
+        WHERE regno=?;
+        """,
+        (registration_number,)
+    )
+
+    row = cursor.fetchone()
+    if row is None:
+        print("\nRecord not found.")
+        return
+
+    expiry_date = datetime.strptime(row[0], "%Y-%m-%d").date()
+    if expiry_date <= date.today():
+        expiry_date = date.today()
+
+    try:
+        expiry_date =  expiry_date.replace(year=expiry_date.year + 1)
+    except ValueError: #in case of a leap year
+        expiry_date + (date(expiry_date.year + 1, 1, 1) - date(expiry_date.year, 1, 1))
+
+    cursor.execute(
+        """
+        UPDATE registrations
+        SET expiry=?
+        WHERE regno=?;
+        """,
+        (expiry_date, registration_number,)
+    )
+    connection.commit()
+
+    print("\nVehicle registration renewed.")
 
 
 def add_person(
