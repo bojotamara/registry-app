@@ -61,7 +61,6 @@ def main(dbname):
 
     print()
     print("See you next time!")
-    connection.commit()
     connection.close()
 
 
@@ -70,6 +69,7 @@ def registry_agents_main(username):
     while True:
         print()
         print("Welcome back, registry agent!")
+        print("Press CTRL-C when performing a function to return to the menu.")
         print("1. Register a birth")
         print("2. Register a marriage")
         print("3. Renew a vehicle registration")
@@ -79,22 +79,26 @@ def registry_agents_main(username):
         print("7. Logout and exit")
         choice = input("Please choose an option: ")
 
-        if choice == "1":
-            registryAgent.register_birth(username)
-        elif choice == "2":
-            registryAgent.register_marriage(username)
-        elif choice == "3":
-            registryAgent.renew_vehicle_registration()
-        elif choice == "4":
-            print("TODO: Not implemented")
-        elif choice == "5":
-            registryAgent.process_payment()
-        elif choice == "6":
-            print("TODO: Not implemented")
-        elif choice == "7":
-            break
-        else:
-            print("Invalid choice.")
+        try:
+            if choice == "1":
+                registryAgent.register_birth(username)
+            elif choice == "2":
+                registryAgent.register_marriage(username)
+            elif choice == "3":
+                registryAgent.renew_vehicle_registration()
+            elif choice == "4":
+                print("TODO: Not implemented")
+            elif choice == "5":
+                registryAgent.process_payment()
+            elif choice == "6":
+                print("TODO: Not implemented")
+            elif choice == "7":
+                break
+            else:
+                print("Invalid choice.")
+        except KeyboardInterrupt:
+            connection.rollback()
+            print("\n\nCurrent function exited. Back to menu.")
 
 
 def traffic_officers_main():
@@ -102,19 +106,24 @@ def traffic_officers_main():
     while True:
         print()
         print("Welcome back, traffic officer!")
+        print("Press CTRL-C when performing a function to return to the menu.")
         print("1. Issue a ticket")
         print("2. Find a car owner")
         print("3. Logout and exit")
         choice = input("Please choose an option: ")
 
-        if choice == "1":
-            trafficOfficer.issue_ticket()
-        elif choice == "2":
-            trafficOfficer.find_car_owner()
-        elif choice == "3":
-            break
-        else:
-            print("Invalid choice.")
+        try:
+            if choice == "1":
+                trafficOfficer.issue_ticket()
+            elif choice == "2":
+                trafficOfficer.find_car_owner()
+            elif choice == "3":
+                break
+            else:
+                print("Invalid choice.")
+        except KeyboardInterrupt:
+            connection.rollback()
+            print("\n\nCurrent function exited. Back to menu.")
 
 
 if __name__ == "__main__":

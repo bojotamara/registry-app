@@ -258,4 +258,3 @@ class RegistryAgent:
                             VALUES(?, ?, ?, ?, ?, ?)""",
             (fname, lname, bdate, bplace, address, phone),
         )
-        self.connection.commit()
