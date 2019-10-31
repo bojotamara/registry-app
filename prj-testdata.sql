@@ -1,6 +1,8 @@
 -- ------------------------- --
 -- Test data (do not submit) --
 -- ------------------------- --
+insert into persons values ('Traffic', 'Officer','1999-01-01', 'Edmonton', 'Edmonton', '780-555-5555');
+insert into persons values ('Registry', 'Agent','1999-01-01', 'Edmonton', 'Edmonton', '780-555-5555');
 insert into users values ('a', '1', 'a', 'Registry', 'Agent', 'Edmonton');
 insert into users values ('o', '1', 'o', 'Traffic', 'Officer', 'Edmonton');
 
