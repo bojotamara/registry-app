@@ -197,10 +197,6 @@ class RegistryAgent:
         if phone is None:
             phone = input_util.read_string(f"{text} phone number: ", optional=True)
 
-        for x in (bdate, bplace, address, phone):
-            if x == "":
-                x = "NULL"
-
         self.cursor.execute(
             """INSERT INTO PERSONS
                             VALUES(?, ?, ?, ?, ?, ?)""",
