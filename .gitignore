@@ -135,3 +135,4 @@ tags
 test
 test.py
 registry.db
+.vscode/

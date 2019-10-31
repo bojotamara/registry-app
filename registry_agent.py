@@ -44,8 +44,12 @@ class RegistryAgent:
 
         address = mother[4]
         phone = mother[5]
+        if address is None:
+            address = "NULL"
+        if phone is None:
+            phone = "NULL"
 
-        self.__add_person(first_name, last_name, "", "", "", "")
+        self.__add_person(first_name, last_name, birth_date, birth_place, address, phone)
 
         self.cursor.execute(
             """INSERT INTO births
