@@ -43,6 +43,9 @@ def read_int(message):
 
 
 def read_date(message, optional=False):
+    #TODO: make this nicer
+    if optional:
+        message += "(optional) "
     while True:
         user_input = input(message)
         if user_input == "" and optional:
@@ -55,8 +58,9 @@ def read_date(message, optional=False):
 
 
 def read_string(message, optional=False):
+    #TODO: make this nicer
     if optional:
-        message += " (optional)"
+        message += "(optional) "
     while True:
         user_input = input(message)
         if user_input == "" and optional:
@@ -85,9 +89,9 @@ def main(dbname):
         print("Login failed.")
         exit(0)
     elif user_data[0] == "a":
-        registry_agents_main(user_data)
+        registry_agents_main(username)
     elif user_data[0] == "o":
-        traffic_officers_main()
+        traffic_officers_main(username)
     else:
         print("Database corrupted: utype is not valid.")
         exit(1)
@@ -98,7 +102,7 @@ def main(dbname):
     connection.close()
 
 
-def registry_agents_main(user_data):
+def registry_agents_main(username):
     while True:
         print()
         print("Welcome back, registry agent!")
@@ -112,9 +116,9 @@ def registry_agents_main(user_data):
         choice = input("Please choose an option: ")
 
         if choice == "1":
-            registry_agent_register_birth(user_data)
+            registry_agent_register_birth(username)
         elif choice == "2":
-            registry_agent_register_marriage(user_data)
+            registry_agent_register_marriage(username)
         elif choice == "3":
             print("TODO: Not implemented")
         elif choice == "4":
@@ -284,10 +288,9 @@ def get_person(fname, lname):
     return cursor.fetchone()
 
 
-def registry_agent_register_birth(user_data):
+def registry_agent_register_birth(username):
     global cursor, connection
 
-    print(user_data)
     print("Registering a birth")
 
     first_name = read_string("First name: ")
@@ -304,7 +307,7 @@ def registry_agent_register_birth(user_data):
     cursor.execute(
         """SELECT city FROM users
         WHERE uid LIKE ?""",
-        user_data[0],
+        username,
     )
     (city,) = cursor.fetchone()
 
@@ -346,6 +349,50 @@ def registry_agent_register_birth(user_data):
     connection.commit()
 
 
+def registry_agent_register_marriage(username):
+    global cursor
+
+    print("Registering a marriage.")
+    p1_first_name = read_string("Partner 1 first name: ")
+    p1_last_name = read_string("Partner 1 last name: ")
+    p2_first_name = read_string("Partner 2 first name: ")
+    p2_last_name = read_string("Partner 2 last name: ")
+
+    partner_1 = get_person(p1_first_name, p1_last_name)
+    if partner_1 == None:
+        print("Partner 1 does not exist in db, please enter optional details: ")
+        add_person(fname=p1_first_name, lname=p1_last_name)
+    
+    partner_2 = get_person(p2_first_name, p2_last_name)
+    if partner_2 == None:
+        print("Partner 2 does not exist in db, please enter optional details: ")
+        add_person(fname=p2_first_name, lname=p2_last_name)
+
+    cursor.execute(
+        """SELECT city FROM users
+        WHERE uid LIKE ?""",
+        username,
+    )
+    (city,) = cursor.fetchone()
+    reg_date = date.today().strftime("%Y-%m-%d")
+
+    cursor.execute(
+        """
+        INSERT INTO marriages
+        VALUES((SELECT MAX(regno) + 1 FROM marriages), ?, ?, ?, ?, ?, ?)
+        """,
+        (
+            reg_date,
+            city,
+            p1_first_name,
+            p1_last_name,
+            p2_first_name,
+            p2_last_name
+        )
+    )
+    connection.commit()
+
+
 def add_person(
     fname: str = None,
     lname: str = None,
@@ -358,17 +405,17 @@ def add_person(
 
     text = "Enter the person's"
     if fname is None:
-        fname = input(f"{text} first name: ")
+        fname = read_string(f"{text} first name: ")
     if lname is None:
-        lname = input(f"{text} last name: ")
+        lname = read_string(f"{text} last name: ")
     if bdate is None:
-        bdate = input(f"{text} birth date: ")
+        bdate = read_date(f"{text} birth date: ", optional=True)
     if bplace is None:
-        bplace = input(f"{text} birth place: ")
+        bplace = read_string(f"{text} birth place: ", optional=True)
     if address is None:
-        address = input(f"{text} address: ")
+        address = read_string(f"{text} address: ", optional=True)
     if phone is None:
-        phone = input(f"{text} phone number: ")
+        phone = read_string(f"{text} phone number: ", optional=True)
 
     for x in (bdate, bplace, address, phone):
         if x == "":
