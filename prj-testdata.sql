@@ -158,6 +158,11 @@ insert into tickets values (414,314,12,'passed in red light of calgary','2019-05
 insert into tickets values (415,315,14,'speeding','2019-06-20');
 insert into tickets values (416,315,15,'dasin rEd lIght VIOLATION','2019-07-20');
 
+insert into payments values (400, "1965-08-20", 1);
+insert into payments values (400, "1965-08-21", 3);
+
+insert into payments values (401, "1965-08-21", 5);
+insert into payments values (401, "1965-08-20", 2);
 
 insert into demeritNotices values ('1964-08-20', 'Walt', 'Disney', 2, 'Speeding');
 insert into demeritNotices values ('2014-08-20', 'Q5', 'OutOfDate', 3, 'Speeding');

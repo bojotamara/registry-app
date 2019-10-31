@@ -88,7 +88,7 @@ def registry_agents_main(username):
         elif choice == "4":
             print("TODO: Not implemented")
         elif choice == "5":
-            print("TODO: Not implemented")
+            registryAgent.process_payment()
         elif choice == "6":
             print("TODO: Not implemented")
         elif choice == "7":

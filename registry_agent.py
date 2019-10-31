@@ -68,8 +68,7 @@ class RegistryAgent:
         )
         self.connection.commit()
 
-        print()
-        print("Birth registered!")
+        print("\nBirth registered!")
 
 
     def register_marriage(self, username):
@@ -119,8 +118,7 @@ class RegistryAgent:
         )
         self.connection.commit()
 
-        print()
-        print("Marriage registered!")
+        print("\nMarriage registered!")
 
     def renew_vehicle_registration(self):
         registration_number = input_util.read_int("Please enter the vehicle registration number: ")
@@ -159,7 +157,65 @@ class RegistryAgent:
 
         print("\nVehicle registration renewed.")
     
-    
+
+    def process_payment(self):
+        while True:
+            ticket_number = input_util.read_int("Please enter the ticket number: ")
+
+            self.cursor.execute(
+                """
+                SELECT fine
+                FROM tickets
+                WHERE tno=?
+                """,
+                (ticket_number,)
+            )
+
+            row = self.cursor.fetchone()
+            if row is None:
+                print("Invalid ticket number. Please try again.")
+            else:
+                (fine,) = row
+                self.cursor.execute(
+                    """
+                    SELECT sum(amount)
+                    FROM payments
+                    WHERE tno=?
+                    """,
+                    (ticket_number,)
+                )
+
+                (payment_sum,) = self.cursor.fetchone()
+                if payment_sum is None:
+                    payment_sum = 0
+
+                if payment_sum >= fine:
+                    print("Ticket is already payed. Try again.")
+                else:
+                    break
+
+        print("Fine: " + str(fine) + "; Amount Payed: " + str(payment_sum))
+        while True:
+            amount = input_util.read_int("Please enter the payment amount: ")
+            if amount <= 0:
+                print("Try again. Enter amount greater than 0.")
+            elif amount + payment_sum > fine:
+                print("Payment amount exceeds fine. Try again")
+            else:
+                break
+
+        pay_date = date.today().strftime("%Y-%m-%d")
+        self.cursor.execute(
+            """
+            INSERT INTO payments
+            VALUES(?,?,?)
+            """,
+            (ticket_number, pay_date, amount,)
+        )
+        self.connection.commit()
+        print("\nTicket payment processed.")
+
+
     def __get_person(self, fname, lname):
         self.cursor.execute(
             """
