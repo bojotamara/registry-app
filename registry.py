@@ -25,11 +25,14 @@ def connect(absolute_path):
 def login(username, password):
     """Returns the user type if user exists"""
     if re.match("^[A-Za-z0-9_]*$", username) and re.match("^[A-Za-z0-9_]*$", password):
-        cursor.execute("""
+        cursor.execute(
+            """
             SELECT utype
             FROM users 
             WHERE uid LIKE ? AND pwd = ?;
-        """, (username, password))
+        """,
+            (username, password),
+        )
         return cursor.fetchone()
     else:
         return None

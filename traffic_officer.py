@@ -11,11 +11,14 @@ class TrafficOfficer:
         print("Issuing a ticket.")
         registration_number = input_util.read_int("Please enter registration number: ")
 
-        self.cursor.execute("""
+        self.cursor.execute(
+            """
             SELECT r.fname, r.lname, v.make, v.model, v.year, v.color
             FROM registrations r, vehicles v
             WHERE r.regno = ? AND r.vin = v.vin;
-        """, (registration_number,))
+        """,
+            (registration_number,),
+        )
         row = self.cursor.fetchone()
 
         if row is None:
@@ -23,14 +26,19 @@ class TrafficOfficer:
             return
         print("|".join(str(elem) for elem in row))
 
-        violation_date = input_util.read_date("Please enter violation date: ", optional=True)
+        violation_date = input_util.read_date(
+            "Please enter violation date: ", optional=True
+        )
         violation_text = input("Please enter violation text: ")
         fine_amount = input_util.read_int("Please enter fine amount: ")
 
-        self.cursor.execute("""
+        self.cursor.execute(
+            """
             INSERT INTO tickets 
             VALUES ((SELECT max(tno) + 1 FROM tickets), ?, ?, ?, IFNULL(?, DATE('now')));
-        """, (registration_number, fine_amount, violation_text, violation_date))
+        """,
+            (registration_number, fine_amount, violation_text, violation_date),
+        )
         self.connection.commit()
 
         print("Ticket Issued.")
@@ -69,7 +77,8 @@ class TrafficOfficer:
             else:
                 print("Invalid choice.")
 
-        self.cursor.execute("""
+        self.cursor.execute(
+            """
             SELECT v.vin, v.make, v.model, v.year, v.color, r.plate
             FROM vehicles v, registrations r
             WHERE v.vin = r.vin AND
@@ -78,7 +87,9 @@ class TrafficOfficer:
                   v.year LIKE ? AND
                   v.color LIKE ? AND
                   r.plate LIKE ?;
-        """, (make, model, year, color, plate))
+        """,
+            (make, model, year, color, plate),
+        )
         rows = self.cursor.fetchall()
 
         if len(rows) == 0:
@@ -98,13 +109,16 @@ class TrafficOfficer:
                 self.__print_row(row)
 
     def __print_row(self, row):
-        self.cursor.execute("""
+        self.cursor.execute(
+            """
             SELECT regdate, expiry, fname, lname
             FROM registrations
             WHERE vin = ?
             ORDER BY regdate DESC
             LIMIT 1;
-        """, (row[0],))
+        """,
+            (row[0],),
+        )
         full_row = self.cursor.fetchone()
 
         print("|".join(str(elem) for elem in row[1:]), end="|")
