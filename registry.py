@@ -56,7 +56,7 @@ def main(dbname):
     elif user_data[0] == "o":
         traffic_officers_main(username)
     else:
-        print("Database corrupted: utype is not valid.")
+        print("Database corrupted, utype is not valid.")
         exit(1)
 
     print()
@@ -69,7 +69,7 @@ def registry_agents_main(username):
     while True:
         print()
         print("Welcome back, registry agent!")
-        print("Press CTRL-C when performing a function to return to the menu.")
+        print("Press CTRL-C at any time to return to this menu.")
         print("1. Register a birth")
         print("2. Register a marriage")
         print("3. Renew a vehicle registration")
@@ -91,7 +91,7 @@ def registry_agents_main(username):
             elif choice == "5":
                 registry_agent.process_payment()
             elif choice == "6":
-                print("TODO: Not implemented")
+                registry_agent.get_driver_abstract()
             elif choice == "7":
                 break
             else:
@@ -106,7 +106,7 @@ def traffic_officers_main():
     while True:
         print()
         print("Welcome back, traffic officer!")
-        print("Press CTRL-C when performing a function to return to the menu.")
+        print("Press CTRL-C at any time to return to this menu.")
         print("1. Issue a ticket")
         print("2. Find a car owner")
         print("3. Logout and exit")

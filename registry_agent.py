@@ -192,6 +192,46 @@ class RegistryAgent:
         self.connection.commit()
         print("\nTicket payment processed.")
 
+    def get_driver_abstract(self):
+        first_name = input_util.read_string("First name: ")
+        last_name = input_util.read_string("Last name: ")
+
+        self.cursor.execute("""
+            SELECT ticket_lifetime.tickets_count,
+                   demerit_lifetime.demerit_count, demerit_lifetime.demerit_sum,
+                   ticket_two_years.tickets_count,
+                   demerit_two_years.demerit_count, demerit_two_years.demerit_sum
+            FROM (
+                SELECT COUNT(t.tno) AS tickets_count
+                FROM persons p, registrations r, tickets t
+                WHERE p.fname = :fname AND p.lname = :lname AND
+                      p.fname = r.fname AND p.lname = r.lname AND
+                      r.regno = t.regno
+            ) as ticket_lifetime, (
+                SELECT COUNT(*) AS demerit_count, IFNULL(SUM(d.points), 0) AS demerit_sum
+                FROM persons p, demeritNotices d
+                WHERE p.fname = :fname AND p.lname = :lname AND
+                      p.fname = d.fname AND p.lname = d.lname AND
+                      p.lname = d.lname
+            ) as demerit_lifetime, (
+                SELECT COUNT(t.tno) AS tickets_count
+                FROM persons p, registrations r, tickets t
+                WHERE p.fname = :fname AND p.lname = :lname AND
+                      p.fname = r.fname AND p.lname = r.lname AND
+                      r.regno = t.regno AND
+                      t.vdate >= DATE('-2 years')
+            ) as ticket_two_years, (
+                SELECT COUNT(*) AS demerit_count, IFNULL(SUM(d.points), 0) AS demerit_sum
+                FROM persons p, demeritNotices d
+                WHERE p.fname = :fname AND p.lname = :lname AND
+                      p.fname = d.fname AND p.lname = d.lname AND
+                      p.lname = d.lname AND
+                      d.ddate >= DATE('-2 years')
+            ) as demerit_two_years;
+        """, {'fname': first_name, 'lname': last_name})
+
+        print(self.cursor.fetchall())
+
     def __get_person(self, fname, lname):
         self.cursor.execute("""
             SELECT *
