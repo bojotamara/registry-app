@@ -28,7 +28,8 @@ def login(username, password):
         cursor.execute("""
             SELECT utype
             FROM users 
-            WHERE uid LIKE ? AND pwd = ?;""", (username, password))
+            WHERE uid LIKE ? AND pwd = ?;
+        """, (username, password))
         return cursor.fetchone()
     else:
         return None
