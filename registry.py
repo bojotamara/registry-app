@@ -65,7 +65,7 @@ def main(dbname):
 
 
 def registry_agents_main(username):
-    registryAgent = RegistryAgent(connection, cursor)
+    registry_agent = RegistryAgent(connection, cursor)
     while True:
         print()
         print("Welcome back, registry agent!")
@@ -81,15 +81,15 @@ def registry_agents_main(username):
 
         try:
             if choice == "1":
-                registryAgent.register_birth(username)
+                registry_agent.register_birth(username)
             elif choice == "2":
-                registryAgent.register_marriage(username)
+                registry_agent.register_marriage(username)
             elif choice == "3":
-                registryAgent.renew_vehicle_registration()
+                registry_agent.renew_vehicle_registration()
             elif choice == "4":
                 print("TODO: Not implemented")
             elif choice == "5":
-                registryAgent.process_payment()
+                registry_agent.process_payment()
             elif choice == "6":
                 print("TODO: Not implemented")
             elif choice == "7":
@@ -102,7 +102,7 @@ def registry_agents_main(username):
 
 
 def traffic_officers_main():
-    trafficOfficer = TrafficOfficer(connection, cursor)
+    traffic_officer = TrafficOfficer(connection, cursor)
     while True:
         print()
         print("Welcome back, traffic officer!")
@@ -114,9 +114,9 @@ def traffic_officers_main():
 
         try:
             if choice == "1":
-                trafficOfficer.issue_ticket()
+                traffic_officer.issue_ticket()
             elif choice == "2":
-                trafficOfficer.find_car_owner()
+                traffic_officer.find_car_owner()
             elif choice == "3":
                 break
             else:

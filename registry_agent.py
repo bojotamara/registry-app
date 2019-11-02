@@ -1,5 +1,6 @@
-import input_util
 from datetime import date, datetime
+import input_util
+
 
 class RegistryAgent:
     def __init__(self, connection, cursor):
@@ -20,15 +21,12 @@ class RegistryAgent:
         father_lname = input_util.read_string("Father last name: ")
         registration_date = date.today().strftime("%Y-%m-%d")
 
-        self.cursor.execute(
-            """SELECT city FROM users
-            WHERE uid LIKE ?""",
-            username,
-        )
+        self.cursor.execute("""
+            SELECT city
+            FROM users
+            WHERE uid LIKE ?;
+        """, (username,))
         (city,) = self.cursor.fetchone()
-
-        mother = None
-        father = None
 
         mother = self.__get_person(mother_fname, mother_lname)
         if mother is None:
@@ -51,25 +49,23 @@ class RegistryAgent:
 
         self.__add_person(first_name, last_name, birth_date, birth_place, address, phone)
 
-        self.cursor.execute(
-            """INSERT INTO births
-                VALUES((SELECT MAX(regno) + 1 FROM births), ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            (
-                first_name,
-                last_name,
-                registration_date,
-                city,
-                gender,
-                father[0],
-                father[1],
-                mother[0],
-                mother[1],
-            ),
-        )
+        self.cursor.execute("""
+            INSERT INTO births
+            VALUES((SELECT MAX(regno) + 1 FROM births), ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        """, (
+            first_name,
+            last_name,
+            registration_date,
+            city,
+            gender,
+            father[0],
+            father[1],
+            mother[0],
+            mother[1]
+        ))
         self.connection.commit()
 
         print("\nBirth registered!")
-
 
     def register_marriage(self, username):
         print("Registering a marriage.")
@@ -79,57 +75,51 @@ class RegistryAgent:
         p2_last_name = input_util.read_string("Partner 2 last name: ")
 
         partner_1 = self.__get_person(p1_first_name, p1_last_name)
-        if partner_1 == None:
+        if partner_1 is None:
             print("Partner 1 does not exist in db, please enter optional details: ")
             self.__add_person(fname=p1_first_name, lname=p1_last_name)
         else:
             p1_first_name = partner_1[0]
             p1_last_name = partner_1[1]
-        
+
         partner_2 = self.__get_person(p2_first_name, p2_last_name)
-        if partner_2 == None:
+        if partner_2 is None:
             print("Partner 2 does not exist in db, please enter optional details: ")
             self.__add_person(fname=p2_first_name, lname=p2_last_name)
         else:
             p2_first_name = partner_2[0]
             p2_last_name = partner_2[1]
 
-        self.cursor.execute(
-            """SELECT city FROM users
-            WHERE uid LIKE ?""",
-            username,
-        )
+        self.cursor.execute("""
+            SELECT city
+            FROM users
+            WHERE uid LIKE ?;
+        """, (username,))
         (city,) = self.cursor.fetchone()
         reg_date = date.today().strftime("%Y-%m-%d")
 
-        self.cursor.execute(
-            """
+        self.cursor.execute("""
             INSERT INTO marriages
-            VALUES((SELECT MAX(regno) + 1 FROM marriages), ?, ?, ?, ?, ?, ?)
-            """,
-            (
-                reg_date,
-                city,
-                p1_first_name,
-                p1_last_name,
-                p2_first_name,
-                p2_last_name
-            )
-        )
+            VALUES((SELECT MAX(regno) + 1 FROM marriages), ?, ?, ?, ?, ?, ?);
+        """, (
+            reg_date,
+            city,
+            p1_first_name,
+            p1_last_name,
+            p2_first_name,
+            p2_last_name
+        ))
         self.connection.commit()
 
         print("\nMarriage registered!")
 
     def renew_vehicle_registration(self):
         registration_number = input_util.read_int("Please enter the vehicle registration number: ")
-        self.cursor.execute(
-            """
+        self.cursor.execute("""
             SELECT expiry
             FROM registrations
             WHERE regno=?;
-            """,
-            (registration_number,)
-        )
+        """, (registration_number,))
 
         row = self.cursor.fetchone()
         if row is None:
@@ -141,49 +131,39 @@ class RegistryAgent:
             expiry_date = date.today()
 
         try:
-            expiry_date =  expiry_date.replace(year=expiry_date.year + 1)
-        except ValueError: #in case of a leap year
+            expiry_date = expiry_date.replace(year=expiry_date.year + 1)
+        except ValueError:  # in case of a leap year
             expiry_date + (date(expiry_date.year + 1, 1, 1) - date(expiry_date.year, 1, 1))
 
-        self.cursor.execute(
-            """
+        self.cursor.execute("""
             UPDATE registrations
             SET expiry=?
             WHERE regno=?;
-            """,
-            (expiry_date, registration_number)
-        )
+        """, (expiry_date, registration_number))
         self.connection.commit()
 
         print("\nVehicle registration renewed.")
-    
 
     def process_payment(self):
         while True:
             ticket_number = input_util.read_int("Please enter the ticket number: ")
 
-            self.cursor.execute(
-                """
+            self.cursor.execute("""
                 SELECT fine
                 FROM tickets
-                WHERE tno=?
-                """,
-                (ticket_number,)
-            )
+                WHERE tno=?;
+            """, (ticket_number,))
 
             row = self.cursor.fetchone()
             if row is None:
                 print("Invalid ticket number. Please try again.")
             else:
                 (fine,) = row
-                self.cursor.execute(
-                    """
+                self.cursor.execute("""
                     SELECT sum(amount)
                     FROM payments
-                    WHERE tno=?
-                    """,
-                    (ticket_number,)
-                )
+                    WHERE tno=?;
+                """, (ticket_number,))
 
                 (payment_sum,) = self.cursor.fetchone()
                 if payment_sum is None:
@@ -205,39 +185,30 @@ class RegistryAgent:
                 break
 
         pay_date = date.today().strftime("%Y-%m-%d")
-        self.cursor.execute(
-            """
+        self.cursor.execute("""
             INSERT INTO payments
-            VALUES(?,?,?)
-            """,
-            (ticket_number, pay_date, amount,)
-        )
+            VALUES(?, ?, ?);
+        """, (ticket_number, pay_date, amount))
         self.connection.commit()
         print("\nTicket payment processed.")
 
-
     def __get_person(self, fname, lname):
-        self.cursor.execute(
-            """
+        self.cursor.execute("""
             SELECT *
             FROM persons
-            WHERE
-            fname LIKE ?
-            AND
-            lname LIKE ?
-            """,
-            (fname, lname)
-        )
+            WHERE fname LIKE ? AND
+                  lname LIKE ?;
+        """, (fname, lname))
         return self.cursor.fetchone()
 
     def __add_person(
-        self,
-        fname: str = None,
-        lname: str = None,
-        bdate: str = None,
-        bplace: str = None,
-        address: str = None,
-        phone: str = None,
+            self,
+            fname: str = None,
+            lname: str = None,
+            bdate: str = None,
+            bplace: str = None,
+            address: str = None,
+            phone: str = None,
     ):
         text = "Enter the person's"
         if fname is None:
@@ -253,8 +224,7 @@ class RegistryAgent:
         if phone is None:
             phone = input_util.read_string(f"{text} phone number: ", optional=True)
 
-        self.cursor.execute(
-            """INSERT INTO PERSONS
-                            VALUES(?, ?, ?, ?, ?, ?)""",
-            (fname, lname, bdate, bplace, address, phone),
-        )
+        self.cursor.execute("""
+            INSERT INTO PERSONS
+            VALUES(?, ?, ?, ?, ?, ?);
+        """, (fname, lname, bdate, bplace, address, phone))

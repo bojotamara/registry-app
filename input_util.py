@@ -1,11 +1,13 @@
 from datetime import datetime
 
+
 def read_int(message):
     while True:
         try:
             return int(input(message))
         except ValueError:
-            print("Try again.")
+            print("Invalid input, please try again.")
+
 
 def read_date(message, optional=False):
     if optional:
@@ -18,7 +20,8 @@ def read_date(message, optional=False):
             datetime.strptime(user_input, "%Y-%m-%d")
             return user_input
         except ValueError:
-            print("Try again.")
+            print("Invalid input, please try again.")
+
 
 def read_string(message, optional=False):
     if optional:
@@ -30,4 +33,4 @@ def read_string(message, optional=False):
         elif user_input != "":
             return user_input
         else:
-            print("Input required.")
+            print("Input required, please try again.")
