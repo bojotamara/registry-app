@@ -203,34 +203,31 @@ class RegistryAgent:
                    demerit_two_years.demerit_count, demerit_two_years.demerit_sum
             FROM (
                 SELECT COUNT(t.tno) AS tickets_count
-                FROM persons p, registrations r, tickets t
-                WHERE p.fname = :fname AND p.lname = :lname AND
-                      p.fname = r.fname AND p.lname = r.lname AND
+                FROM registrations r, tickets t
+                WHERE r.fname LIKE :fname AND r.lname LIKE :lname AND
                       r.regno = t.regno
             ) as ticket_lifetime, (
                 SELECT COUNT(*) AS demerit_count, IFNULL(SUM(d.points), 0) AS demerit_sum
-                FROM persons p, demeritNotices d
-                WHERE p.fname = :fname AND p.lname = :lname AND
-                      p.fname = d.fname AND p.lname = d.lname AND
-                      p.lname = d.lname
+                FROM demeritNotices d
+                WHERE d.fname LIKE :fname AND d.lname LIKE :lname
             ) as demerit_lifetime, (
                 SELECT COUNT(t.tno) AS tickets_count
-                FROM persons p, registrations r, tickets t
-                WHERE p.fname = :fname AND p.lname = :lname AND
-                      p.fname = r.fname AND p.lname = r.lname AND
+                FROM registrations r, tickets t
+                WHERE r.fname LIKE :fname AND r.lname LIKE :lname AND
                       r.regno = t.regno AND
                       t.vdate >= DATE('now', '-2 years')
             ) as ticket_two_years, (
                 SELECT COUNT(*) AS demerit_count, IFNULL(SUM(d.points), 0) AS demerit_sum
-                FROM persons p, demeritNotices d
-                WHERE p.fname = :fname AND p.lname = :lname AND
-                      p.fname = d.fname AND p.lname = d.lname AND
-                      p.lname = d.lname AND
+                FROM demeritNotices d
+                WHERE d.fname LIKE :fname AND d.lname LIKE :lname AND
                       d.ddate >= DATE('now', '-2 years')
             ) as demerit_two_years;
         """, {'fname': first_name, 'lname': last_name})
 
-        print(self.cursor.fetchall())
+        result = self.cursor.fetchone()
+
+        print(f"Lifetime: {result[0]} tickets, {result[1]} demerit notices, {result [2]} demerit points")
+        print(f"Last two years: {result[3]} tickets, {result[4]} demerit notices, {result[5]} demerit points")
 
     def __get_person(self, fname, lname):
         self.cursor.execute("""
