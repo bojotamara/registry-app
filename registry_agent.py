@@ -124,7 +124,7 @@ class RegistryAgent:
         self.cursor.execute("""
             SELECT expiry
             FROM registrations
-            WHERE regno=?;
+            WHERE regno = ?;
         """, (registration_number,))
 
         row = self.cursor.fetchone()
@@ -143,8 +143,8 @@ class RegistryAgent:
 
         self.cursor.execute("""
             UPDATE registrations
-            SET expiry=?
-            WHERE regno=?;
+            SET expiry = ?
+            WHERE regno = ?;
         """, (expiry_date, registration_number))
         self.connection.commit()
 
@@ -154,7 +154,46 @@ class RegistryAgent:
         print()
         print("Processing a bill of sale.")
 
-        vin = input_util.read_int("Please enter vehicle registration number: ")
+        vin = input_util.read_string("Please enter vehicle identification number: ")
+        current_fname = input_util.read_string("Please enter current owner's first name: ")
+        current_lname = input_util.read_string("Please enter current owner's last name: ")
+        self.cursor.execute("""
+            SELECT regno, vin, fname, lname
+            FROM registrations r
+            WHERE r.vin LIKE ?
+            ORDER BY regdate DESC;
+        """, (vin,))
+
+        current_registration = self.cursor.fetchone()
+        if current_registration is None:
+            print("The registration number does not exist.")
+            return
+
+        registered_fname = current_registration[2].lower()
+        registered_lname = current_registration[3].lower()
+        if registered_fname != current_fname.lower() or registered_lname != current_lname.lower():
+            print("The vehicle is owned by someone else, transfer cannot be done.")
+            return
+
+        new_fname = input_util.read_string("Please enter new owner's first name: ")
+        new_lname = input_util.read_string("Please enter new owner's last name: ")
+        plate = input_util.read_string("Please enter plate number: ")
+
+        new_owner = self.__get_person(new_fname, new_lname)
+        if new_owner is None:
+            print("New owner does not exist in database, please enter optional details.")
+            self.__add_person(fname=new_fname, lname=new_lname)
+
+        self.cursor.execute("""
+            UPDATE registrations
+            SET expiry = DATE('now')
+            WHERE regno = ?;
+        """, (current_registration[0],))
+        self.cursor.execute("""
+            INSERT INTO registrations
+            VALUES ((SELECT MAX(regno) + 1 FROM registrations), DATE('now'), DATE('now', '+1 year'), ?, ?, ?, ?);
+        """, (plate, current_registration[1], new_fname, new_lname))
+        self.connection.commit()
 
     def process_payment(self):
         print()
@@ -166,7 +205,7 @@ class RegistryAgent:
             self.cursor.execute("""
                 SELECT fine
                 FROM tickets
-                WHERE tno=?;
+                WHERE tno = ?;
             """, (ticket_number,))
 
             row = self.cursor.fetchone()
@@ -177,7 +216,7 @@ class RegistryAgent:
                 self.cursor.execute("""
                     SELECT sum(amount)
                     FROM payments
-                    WHERE tno=?;
+                    WHERE tno = ?;
                 """, (ticket_number,))
 
                 (payment_sum,) = self.cursor.fetchone()
@@ -312,6 +351,6 @@ class RegistryAgent:
             phone = input_util.read_string(f"{text} phone number: ", optional=True)
 
         self.cursor.execute("""
-            INSERT INTO PERSONS
+            INSERT INTO persons
             VALUES(?, ?, ?, ?, ?, ?);
         """, (fname, lname, bdate, bplace, address, phone))
