@@ -8,17 +8,18 @@ class RegistryAgent:
         self.cursor = cursor
 
     def register_birth(self, username):
+        print()
         print("Registering a birth")
 
-        first_name = input_util.read_string("First name: ")
-        last_name = input_util.read_string("Last name: ")
-        gender = input_util.read_string("Gender: ")
-        birth_date = input_util.read_date("Birth date: ")
-        birth_place = input_util.read_string("Birth place: ")
-        mother_fname = input_util.read_string("Mother first name: ")
-        mother_lname = input_util.read_string("Mother last name: ")
-        father_fname = input_util.read_string("Father first name: ")
-        father_lname = input_util.read_string("Father last name: ")
+        first_name = input_util.read_string("Please enter baby's first name: ")
+        last_name = input_util.read_string("Please enter baby's last name: ")
+        gender = input_util.read_string("Please enter baby's gender (M/F): ")  # TODO: Validation
+        birth_date = input_util.read_date("Please enter baby's birth date: ")
+        birth_place = input_util.read_string("Please enter baby's birth place: ")
+        mother_fname = input_util.read_string("Please enter mother's first name: ")
+        mother_lname = input_util.read_string("Please enter mother's last name: ")
+        father_fname = input_util.read_string("Please enter father's first name: ")
+        father_lname = input_util.read_string("Please enter father's last name: ")
         registration_date = date.today().strftime("%Y-%m-%d")
 
         self.cursor.execute("""
@@ -30,13 +31,13 @@ class RegistryAgent:
 
         mother = self.__get_person(mother_fname, mother_lname)
         if mother is None:
-            print("Mother does not exist in db, please enter her details: ")
+            print("Mother does not exist in database, please enter her details.")
             self.__add_person(fname=mother_fname, lname=mother_lname)
             mother = self.__get_person(mother_fname, mother_lname)
 
         father = self.__get_person(father_fname, father_lname)
         if father is None:
-            print("Father does not exist in db, please enter his details: ")
+            print("Father does not exist in database, please enter his details.")
             self.__add_person(fname=father_fname, lname=father_lname)
             father = self.__get_person(father_fname, father_lname)
 
@@ -65,18 +66,20 @@ class RegistryAgent:
         ))
         self.connection.commit()
 
-        print("\nBirth registered!")
+        print("Birth registered.")
 
     def register_marriage(self, username):
+        print()
         print("Registering a marriage.")
-        p1_first_name = input_util.read_string("Partner 1 first name: ")
-        p1_last_name = input_util.read_string("Partner 1 last name: ")
-        p2_first_name = input_util.read_string("Partner 2 first name: ")
-        p2_last_name = input_util.read_string("Partner 2 last name: ")
+
+        p1_first_name = input_util.read_string("Please enter first partner's first name: ")
+        p1_last_name = input_util.read_string("Please enter first partner's last name: ")
+        p2_first_name = input_util.read_string("Please enter second partner's first name: ")
+        p2_last_name = input_util.read_string("Please enter second partner's last name: ")
 
         partner_1 = self.__get_person(p1_first_name, p1_last_name)
         if partner_1 is None:
-            print("Partner 1 does not exist in db, please enter optional details: ")
+            print("First partner does not exist in database, please enter optional details.")
             self.__add_person(fname=p1_first_name, lname=p1_last_name)
         else:
             p1_first_name = partner_1[0]
@@ -84,7 +87,7 @@ class RegistryAgent:
 
         partner_2 = self.__get_person(p2_first_name, p2_last_name)
         if partner_2 is None:
-            print("Partner 2 does not exist in db, please enter optional details: ")
+            print("Second partner does not exist in database, please enter optional details.")
             self.__add_person(fname=p2_first_name, lname=p2_last_name)
         else:
             p2_first_name = partner_2[0]
@@ -111,9 +114,12 @@ class RegistryAgent:
         ))
         self.connection.commit()
 
-        print("\nMarriage registered!")
+        print("Marriage registered.")
 
     def renew_vehicle_registration(self):
+        print()
+        print("Renewing a vehicle registration.")
+
         registration_number = input_util.read_int("Please enter the vehicle registration number: ")
         self.cursor.execute("""
             SELECT expiry
@@ -123,7 +129,7 @@ class RegistryAgent:
 
         row = self.cursor.fetchone()
         if row is None:
-            print("\nRecord not found.")
+            print("Record not found.")
             return
 
         expiry_date = datetime.strptime(row[0], "%Y-%m-%d").date()
@@ -142,11 +148,20 @@ class RegistryAgent:
         """, (expiry_date, registration_number))
         self.connection.commit()
 
-        print("\nVehicle registration renewed.")
+        print("Vehicle registration renewed.")
+
+    def process_bill_of_sale(self):
+        print()
+        print("Processing a bill of sale.")
+
+        vin = input_util.read_int("Please enter vehicle registration number: ")
 
     def process_payment(self):
+        print()
+        print("Processing a payment.")
+
         while True:
-            ticket_number = input_util.read_int("Please enter the ticket number: ")
+            ticket_number = input_util.read_int("Please enter ticket number: ")
 
             self.cursor.execute("""
                 SELECT fine
@@ -156,7 +171,7 @@ class RegistryAgent:
 
             row = self.cursor.fetchone()
             if row is None:
-                print("Invalid ticket number. Please try again.")
+                print("Invalid ticket number, please try again.")
             else:
                 (fine,) = row
                 self.cursor.execute("""
@@ -170,17 +185,18 @@ class RegistryAgent:
                     payment_sum = 0
 
                 if payment_sum >= fine:
-                    print("Ticket is already payed. Try again.")
+                    print("Ticket is already payed, please try again.")
                 else:
                     break
 
-        print("Fine: " + str(fine) + "; Amount Payed: " + str(payment_sum))
+        print("Fine: " + str(fine))
+        print("Amount paid: " + str(payment_sum))
         while True:
             amount = input_util.read_int("Please enter the payment amount: ")
             if amount <= 0:
-                print("Try again. Enter amount greater than 0.")
+                print("Amount should be greater than 0, please try again.")
             elif amount + payment_sum > fine:
-                print("Payment amount exceeds fine. Try again")
+                print("Payment amount exceeds fine, please try again.")
             else:
                 break
 
@@ -190,11 +206,14 @@ class RegistryAgent:
             VALUES(?, ?, ?);
         """, (ticket_number, pay_date, amount))
         self.connection.commit()
-        print("\nTicket payment processed.")
+        print("Ticket payment processed.")
 
     def get_driver_abstract(self):
-        first_name = input_util.read_string("First name: ")
-        last_name = input_util.read_string("Last name: ")
+        print()
+        print("Getting a driver abstract.")
+
+        first_name = input_util.read_string("Please enter first name: ")
+        last_name = input_util.read_string("Please enter last name: ")
         data = {'fname': first_name, 'lname': last_name}
 
         self.cursor.execute("""
@@ -254,11 +273,11 @@ class RegistryAgent:
                     printed += 1
                     consumed += 1
                 if consumed < result[0]:
-                    print("More tickets not shown, select show tickets to show more.")
+                    print("More tickets not shown, please select show tickets to show more.")
             elif choice == "2":
                 break
             else:
-                print("Invalid choice.")
+                print("Invalid choice, please try again.")
 
     def __get_person(self, fname, lname):
         self.cursor.execute("""

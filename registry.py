@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from getpass import getpass
 from os import path
@@ -77,9 +77,9 @@ def registry_agents_main(username):
         print("5. Process a payment")
         print("6. Get a driver abstract")
         print("7. Logout and exit")
-        choice = input("Please choose an option: ")
 
         try:
+            choice = input("Please choose an option: ")
             if choice == "1":
                 registry_agent.register_birth(username)
             elif choice == "2":
@@ -87,7 +87,7 @@ def registry_agents_main(username):
             elif choice == "3":
                 registry_agent.renew_vehicle_registration()
             elif choice == "4":
-                print("TODO: Not implemented")
+                registry_agent.process_bill_of_sale()
             elif choice == "5":
                 registry_agent.process_payment()
             elif choice == "6":
@@ -95,10 +95,11 @@ def registry_agents_main(username):
             elif choice == "7":
                 break
             else:
-                print("Invalid choice.")
+                print("Invalid choice, please try again.")
         except KeyboardInterrupt:
             connection.rollback()
-            print("\n\nCurrent function exited. Back to menu.")
+            print()
+            print("Current function exited, going back to main menu.")
 
 
 def traffic_officers_main():
@@ -110,9 +111,9 @@ def traffic_officers_main():
         print("1. Issue a ticket")
         print("2. Find a car owner")
         print("3. Logout and exit")
-        choice = input("Please choose an option: ")
 
         try:
+            choice = input("Please choose an option: ")
             if choice == "1":
                 traffic_officer.issue_ticket()
             elif choice == "2":
@@ -120,10 +121,11 @@ def traffic_officers_main():
             elif choice == "3":
                 break
             else:
-                print("Invalid choice.")
+                print("Invalid choice, please try again.")
         except KeyboardInterrupt:
             connection.rollback()
-            print("\n\nCurrent function exited. Back to menu.")
+            print()
+            print("Current function exited, going back to main menu.")
 
 
 if __name__ == "__main__":

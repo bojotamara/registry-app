@@ -33,9 +33,11 @@ class TrafficOfficer:
         """, (registration_number, fine_amount, violation_text, violation_date))
         self.connection.commit()
 
+        print("Ticket Issued.")
+
     def find_car_owner(self):
         print()
-        print("Find a car owner.")
+        print("Finding a car owner.")
 
         make = "%"
         model = "%"
