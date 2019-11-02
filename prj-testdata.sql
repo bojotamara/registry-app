@@ -1,6 +1,8 @@
 -- ------------------------- --
 -- Test data (do not submit) --
 -- ------------------------- --
+PRAGMA foreign_keys=ON;
+
 insert into persons values ('Traffic', 'Officer','1999-01-01', 'Edmonton', 'Edmonton', '780-555-5555');
 insert into persons values ('Registry', 'Agent','1999-01-01', 'Edmonton', 'Edmonton', '780-555-5555');
 insert into users values ('a', '1', 'a', 'Registry', 'Agent', 'Edmonton');
@@ -174,3 +176,8 @@ insert into demeritNotices values ('2019-08-20', 'Q5', 'Single20', 20, 'Drunk Dr
 insert into demeritNotices values ('2019-01-20', 'Q5', 'Multi20', 3, 'Drunk Driving');
 insert into demeritNotices values ('2019-04-20', 'Q5', 'Multi20', 15, 'Drunk Driving');
 insert into demeritNotices values ('2019-10-05', 'Q5', 'Multi20', 7, 'Drunk Driving');
+
+-- ------------- --
+-- Extended data --
+-- ------------- --
+insert into tickets values (419,313,10,'speeding 2','2019-08-20');

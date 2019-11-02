@@ -195,6 +195,7 @@ class RegistryAgent:
     def get_driver_abstract(self):
         first_name = input_util.read_string("First name: ")
         last_name = input_util.read_string("Last name: ")
+        data = {'fname': first_name, 'lname': last_name}
 
         self.cursor.execute("""
             SELECT ticket_lifetime.tickets_count,
@@ -222,12 +223,42 @@ class RegistryAgent:
                 WHERE d.fname LIKE :fname AND d.lname LIKE :lname AND
                       d.ddate >= DATE('now', '-2 years')
             ) as demerit_two_years;
-        """, {'fname': first_name, 'lname': last_name})
+        """, data)
 
         result = self.cursor.fetchone()
 
-        print(f"Lifetime: {result[0]} tickets, {result[1]} demerit notices, {result [2]} demerit points")
+        print(f"Lifetime: {result[0]} tickets, {result[1]} demerit notices, {result[2]} demerit points")
         print(f"Last two years: {result[3]} tickets, {result[4]} demerit notices, {result[5]} demerit points")
+
+        if result[0] == 0:
+            return
+
+        self.cursor.execute("""
+            SELECT t.tno, t.vdate, t.violation, t.fine, t.regno, v.make, v.model
+            FROM tickets t, registrations r, vehicles v
+            WHERE r.fname LIKE :fname AND r.lname LIKE :lname AND
+                  v.vin = r.vin AND r.regno = t.regno
+            ORDER BY t.vdate DESC;
+        """, data)
+        consumed = 0
+
+        while consumed < result[0]:
+            print("1. Show tickets")
+            print("2. Exit")
+            choice = input("Please choose an option: ")
+
+            if choice == "1":
+                printed = 0
+                while printed < 5 and consumed < result[0]:
+                    print("|".join(str(elem) for elem in self.cursor.fetchone()))
+                    printed += 1
+                    consumed += 1
+                if consumed < result[0]:
+                    print("More tickets not shown, select show tickets to show more.")
+            elif choice == "2":
+                break
+            else:
+                print("Invalid choice.")
 
     def __get_person(self, fname, lname):
         self.cursor.execute("""
