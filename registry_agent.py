@@ -219,14 +219,14 @@ class RegistryAgent:
                 WHERE p.fname = :fname AND p.lname = :lname AND
                       p.fname = r.fname AND p.lname = r.lname AND
                       r.regno = t.regno AND
-                      t.vdate >= DATE('-2 years')
+                      t.vdate >= DATE('now', '-2 years')
             ) as ticket_two_years, (
                 SELECT COUNT(*) AS demerit_count, IFNULL(SUM(d.points), 0) AS demerit_sum
                 FROM persons p, demeritNotices d
                 WHERE p.fname = :fname AND p.lname = :lname AND
                       p.fname = d.fname AND p.lname = d.lname AND
                       p.lname = d.lname AND
-                      d.ddate >= DATE('-2 years')
+                      d.ddate >= DATE('now', '-2 years')
             ) as demerit_two_years;
         """, {'fname': first_name, 'lname': last_name})
 
