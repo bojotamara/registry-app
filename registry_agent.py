@@ -195,6 +195,8 @@ class RegistryAgent:
         """, (plate, current_registration[1], new_fname, new_lname))
         self.connection.commit()
 
+        print("Bill of sale processed.")
+
     def process_payment(self):
         print()
         print("Processing a payment.")
@@ -245,6 +247,7 @@ class RegistryAgent:
             VALUES(?, ?, ?);
         """, (ticket_number, pay_date, amount))
         self.connection.commit()
+
         print("Ticket payment processed.")
 
     def get_driver_abstract(self):

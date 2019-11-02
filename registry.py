@@ -23,12 +23,12 @@ def connect(absolute_path):
 
 
 def login(username, password):
-    # Should return the user type if user exists
+    """Returns the user type if user exists"""
     if re.match("^[A-Za-z0-9_]*$", username) and re.match("^[A-Za-z0-9_]*$", password):
-        cursor.execute(
-            "SELECT utype FROM users WHERE uid LIKE ? AND pwd = ?;",
-            (username, password),
-        )
+        cursor.execute("""
+            SELECT utype
+            FROM users 
+            WHERE uid LIKE ? AND pwd = ?;""", (username, password))
         return cursor.fetchone()
     else:
         return None
@@ -39,6 +39,7 @@ def main(dbname):
     if not path.exists(absolute_path):
         print("Provided .db file does not exist.")
         exit(1)
+
     connect(absolute_path)
 
     print("Welcome to the Registry!")
@@ -54,7 +55,7 @@ def main(dbname):
     elif user_data[0] == "a":
         registry_agents_main(username)
     elif user_data[0] == "o":
-        traffic_officers_main(username)
+        traffic_officers_main()
     else:
         print("Database corrupted, utype is not valid.")
         exit(1)
