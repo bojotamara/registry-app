@@ -29,6 +29,8 @@
   🤷 and don't do the registration
 - ❌ person's phone number allows for invalid phone numbers to be entered.
 - 🤷 data in the table looks good
+- ❌ on insert, a name like davood vs Davood is considered different, and not a
+  duplicate. It should be a duplicate, and the registration should be cancelled
 
 comments: I think we should prompt the user on the input date format i.e.
 YYYY-MM-DD
