@@ -24,8 +24,8 @@ class RegistryAgent:
             (first_name, last_name),
         )
 
-        if self.cursor.fetchone() is None:
-            print("Person with name name already exists. Cancelling registration...")
+        if self.cursor.fetchone() is not None:
+            print("Person with same name already exists. Cancelling registration...")
             return
 
         gender = None
