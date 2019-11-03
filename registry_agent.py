@@ -13,9 +13,18 @@ class RegistryAgent:
 
         first_name = input_util.read_string("Please enter baby's first name: ")
         last_name = input_util.read_string("Please enter baby's last name: ")
-        gender = input_util.read_string(
-            "Please enter baby's gender (M/F): "
-        )  # TODO: Validation
+
+        gender = None
+
+        while True:
+            gender = input_util.read_string("Please enter baby's gender (M/F): ")
+            if (
+                gender.casefold() == "m".casefold()
+                or gender.casefold() == "f".casefold()
+            ):
+                break
+            print("Gender must either be m or f, please try again")
+
         birth_date = input_util.read_date("Please enter baby's birth date: ")
         birth_place = input_util.read_string("Please enter baby's birth place: ")
         mother_fname = input_util.read_string("Please enter mother's first name: ")

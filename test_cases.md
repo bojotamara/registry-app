@@ -1,7 +1,7 @@
 # Manual test cases:
 ✅ - works
 ❌ - broken
-☑️  - fixed
+🔧 - fixed - plz test
 🤷 - #todo, not tested yet
 ❓ - unsure, need clarification on what is expected.
 
@@ -18,7 +18,7 @@
 
 1. Register a birth
 - ❓ are characters like ?\*! allowed for first/last name ?
-- ❌ gender not restricted to M/F
+- 🔧 gender not restricted to M/F
 - 🤷 mother doesn't exist 
 - 🤷 father doesn't exist
 - 🤷 both parents don't exist
