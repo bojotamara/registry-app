@@ -17,7 +17,7 @@
 ## Registry Agents
 
 1. Register a birth
-- ❓ are characters like ?\*! allowed for first/last name
+- ❓ are characters like ?\*! allowed for first/last name ?
 - ❌ gender not restricted to M/F
 - 🤷 mother doesn't exist 
 - 🤷 father doesn't exist
@@ -101,29 +101,30 @@ non-numerical input
 - ✅ search by make
 - ✅ search by model
 - ✅ search by year
+- 🤷 combinations of the above
 - ❌ when more than 4 results are returned, the menu isn't printed out, and
   "Please choose an option is printed, so the user can get confused. 
   i.e. for example:
   ```
   Please enter color: white
-1. Enter make
-2. Enter model
-3. Enter year
-4. Enter color
-5. Enter plate
-6. Execute search
-Please choose an option: 6
-0. Chevrolet|Camaro|1969|white|Z7F9J2
-1. Audi|A4|2012|white|Z7F9J2
-2. Chevrolet|Camaro|2012|white|Z7F9J2
-3. Audi|A4|2013|white|Z7F9J2
-4. Audi|A4|2014|white|Z7F9J2
-5. Audi|A4|2015|white|Z7F9J2
-6. Audi|A4|2016|white|Z7F9J2
-7. Audi|A4|2014|white|Z7F9J2
-8. Chevrolet|Camaro|2012|white|Z7F9J2
-Please choose an option:
-```
+  1. Enter make
+  2. Enter model
+  3. Enter year
+  4. Enter color
+  5. Enter plate
+  6. Execute search
+  Please choose an option: 6
+  0. Chevrolet|Camaro|1969|white|Z7F9J2
+  1. Audi|A4|2012|white|Z7F9J2
+  2. Chevrolet|Camaro|2012|white|Z7F9J2
+  3. Audi|A4|2013|white|Z7F9J2
+  4. Audi|A4|2014|white|Z7F9J2
+  5. Audi|A4|2015|white|Z7F9J2
+  6. Audi|A4|2016|white|Z7F9J2
+  7. Audi|A4|2014|white|Z7F9J2
+  8. Chevrolet|Camaro|2012|white|Z7F9J2
+  Please choose an option:
+  ```
 - ❓when no search parameters are entered, all vehicles are returned. Is this
   what we want?
 - ❌ when 2 consecutive searches are done with empty parameters, sometimes we
@@ -134,33 +135,35 @@ Please choose an option:
   , and then 17 results if we search again
 - ❌ overall pretty buggy when more than 4 results returned. Search can get
   executed even though 6 is not entered
-```
-1. Enter make
-2. Enter model
-3. Enter year
-4. Enter color
-5. Enter plate
-6. Execute search
-Please choose an option: 6
-0. Chevrolet|Camaro|2012|black|M7F8J2
-1. Toyoto|Corolla|2012|red|Z7F9J2
-2. Toyoto|RAV4|2012|black|Z7F9J2
-3. Audi|A4|2012|white|Z7F9J2
-4. Chevrolet|Camaro|2012|white|Z7F9J2
-5. Chevrolet|Camaro|2012|white|Z7F9J2
-Please choose an option: 3
-Audi|A4|2012|white|Z7F9J2|2012-01-26|2008-07-25|Horace|Combs
+  ```
+  1. Enter make
+  2. Enter model
+  3. Enter year
+  4. Enter color
+  5. Enter plate
+  6. Execute search
+  Please choose an option: 6
+  0. Chevrolet|Camaro|2012|black|M7F8J2
+  1. Toyoto|Corolla|2012|red|Z7F9J2
+  2. Toyoto|RAV4|2012|black|Z7F9J2
+  3. Audi|A4|2012|white|Z7F9J2
+  4. Chevrolet|Camaro|2012|white|Z7F9J2
+  5. Chevrolet|Camaro|2012|white|Z7F9J2
+  Please choose an option: 3
+  Audi|A4|2012|white|Z7F9J2|2012-01-26|2008-07-25|Horace|Combs
 
-Welcome back, traffic officer!
-Press CTRL-C at any time to return to this menu.
-1. Issue a ticket
-2. Find a car owner
-3. Logout and exit
-Please choose an option:
-```
-- 🤷 if there are 4 or more results, then only show the make, model, year, colour,
+  Welcome back, traffic officer!
+  Press CTRL-C at any time to return to this menu.
+  1. Issue a ticket
+  2. Find a car owner
+  3. Logout and exit
+  Please choose an option:
+  ```
+- 🤷 if there are 4 or more results, then only show the make, model, year,
+  colour,
   and plate
-- 🤷 if a car has never been registered, then the output should indicate that the
+- 🤷 if a car has never been registered, then the output should indicate that
+  the
   car has no owner
 
 comments: 
