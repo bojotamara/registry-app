@@ -66,7 +66,7 @@ YYYY-MM-DD
 
 5. Process a payment
 - ✅ if a ticket number does not exist, we're told it's invalid
-- ❌ warn the user that only one payment can be made per day on a ticket.
+- 🔧 warn the user that only one payment can be made per day on a ticket.
   (right now, we get a stack trace on the db's unique integrity constraint
   failing.)
 - ✅ warning if payment amount exceeds fine

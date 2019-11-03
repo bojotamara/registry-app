@@ -300,11 +300,33 @@ class RegistryAgent:
                 )
 
                 (payment_sum,) = self.cursor.fetchone()
+
+                self.cursor.execute(
+                    """
+                    SELECT pdate
+                    FROM payments
+                    WHERE tno = ?
+                    ORDER BY pdate DESC
+                    LIMIT 1;
+                """,
+                    (ticket_number,),
+                )
+                latest_payment = self.cursor.fetchone()
+                if latest_payment is not None:
+                    (latest_payment,) = latest_payment
+
                 if payment_sum is None:
                     payment_sum = 0
 
                 if payment_sum >= fine:
                     print("Ticket is already payed, please try again.")
+
+                elif latest_payment == date.today().strftime("%Y-%m-%d"):
+                    print(
+                        "A payment was already made today for this ticket, cancelling..."
+                    )
+                    return
+
                 else:
                     break
 
