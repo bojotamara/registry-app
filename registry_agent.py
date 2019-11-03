@@ -1,5 +1,6 @@
 from datetime import date, datetime
 import input_util
+import re
 
 
 class RegistryAgent:
@@ -445,8 +446,19 @@ class RegistryAgent:
             bplace = input_util.read_string(f"{text} birth place: ", optional=True)
         if address is None:
             address = input_util.read_string(f"{text} address: ", optional=True)
-        if phone is None:
-            phone = input_util.read_string(f"{text} phone number: ", optional=True)
+
+        phone_regex = re.compile(r"\d{3}-\d{3}-\d{4}$")
+        while phone is None:
+            phone = input_util.read_string(
+                f"{text} phone number (XXX-XXX-XXXX): ", optional=True
+            )
+            if phone is None:  # optional
+                break
+            if not phone_regex.match(phone):
+                phone = None
+                print(
+                    "Phone number entered in wrong format, please try again, or leave blank"
+                )
 
         self.cursor.execute(
             """
