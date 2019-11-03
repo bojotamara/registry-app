@@ -39,7 +39,7 @@ YYYY-MM-DD
 - 🤷 first partner doesn't exist
 - 🤷 second partner doesn't exist
 - 🤷 both partners exist
-- ❌ person's phone number allows for invalid phone numbers to be entered.
+- 🔧 person's phone number allows for invalid phone numbers to be entered.
 - 🤷 data in the table looks good
 
 3. Renew a vehicle registration
