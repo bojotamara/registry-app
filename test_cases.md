@@ -67,7 +67,6 @@ YYYY-MM-DD
   failing.)
 - ✅ warning if payment amount exceeds fine
 - ✅ warning if a ticket is already payed
-- ❓ should decimal input be allowed? i.e. paying $13.50 
 - 🤷 data in the table looks good
 
 comments: maybe if a ticket number is not found, we tell the user that it does
