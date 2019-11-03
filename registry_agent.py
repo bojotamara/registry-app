@@ -14,8 +14,21 @@ class RegistryAgent:
         first_name = input_util.read_string("Please enter baby's first name: ")
         last_name = input_util.read_string("Please enter baby's last name: ")
 
-        gender = None
+        self.cursor.execute(
+            """
+            SELECT *
+            FROM births
+            WHERE fname LIKE ?
+            AND lname LIKE ?;
+        """,
+            (first_name, last_name),
+        )
 
+        if self.cursor.fetchone() is None:
+            print("Person with name name already exists. Cancelling registration...")
+            return
+
+        gender = None
         while True:
             gender = input_util.read_string("Please enter baby's gender (M/F): ")
             if (
