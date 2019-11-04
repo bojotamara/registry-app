@@ -137,7 +137,7 @@ class RegistryAgent:
             p1_first_name.lower() == p2_first_name.lower()
             and p1_last_name.lower() == p2_last_name.lower()
         ):
-            print("A person cannot marry him or herself")
+            print("A person cannot marry him or herself.")
             return
 
         partner_1 = self.__get_person(p1_first_name, p1_last_name)
