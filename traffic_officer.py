@@ -30,7 +30,13 @@ class TrafficOfficer:
             "Please enter violation date: ", optional=True
         )
         violation_text = input_util.read_string("Please enter violation text: ")
-        fine_amount = input_util.read_int("Please enter fine amount: ")
+
+        while True:
+            fine_amount = input_util.read_int("Please enter fine amount: ")
+            if fine_amount <= 0:
+                print("Fine amount must be larger than 0.")
+            else:
+                break
 
         self.cursor.execute(
             """
