@@ -94,7 +94,7 @@ class TrafficOfficer:
 
         if len(rows) == 0:
             print("No result.")
-        elif len(rows) > 4:
+        elif len(rows) >= 4:
             for i in range(len(rows)):
                 print(str(i) + ". " + "|".join(str(elem) for elem in rows[i][1:]))
 
