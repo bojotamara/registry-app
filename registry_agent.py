@@ -41,7 +41,15 @@ class RegistryAgent:
                 break
             print("Gender must either be m or f, please try again")
 
-        birth_date = input_util.read_date("Please enter baby's birth date: ")
+        while True:
+            birth_date = input_util.read_date("Please enter baby's birth date: ")
+            bday_date = datetime.strptime(birth_date, "%Y-%m-%d").date()
+            if bday_date > date.today():
+                print("Baby can't be born in the future.")
+            else:
+                break
+
+
         birth_place = input_util.read_string("Please enter baby's birth place: ")
         mother_fname = input_util.read_name("Please enter mother's first name: ")
         mother_lname = input_util.read_name("Please enter mother's last name: ")
