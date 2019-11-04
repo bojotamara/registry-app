@@ -285,19 +285,9 @@ class RegistryAgent:
 
             row = self.cursor.fetchone()
             if row is None:
-                print("Invalid ticket number, please try again.")
+                print("Ticket doesn't exist, please try again.")
             else:
                 (fine,) = row
-                self.cursor.execute(
-                    """
-                    SELECT sum(amount)
-                    FROM payments
-                    WHERE tno = ?;
-                """,
-                    (ticket_number,),
-                )
-
-                (payment_sum,) = self.cursor.fetchone()
 
                 self.cursor.execute(
                     """
@@ -313,18 +303,28 @@ class RegistryAgent:
                 if latest_payment is not None:
                     (latest_payment,) = latest_payment
 
-                if payment_sum is None:
-                    payment_sum = 0
-
-                if payment_sum >= fine:
-                    print("Ticket is already payed, please try again.")
-
-                elif latest_payment == date.today().strftime("%Y-%m-%d"):
+                if latest_payment == date.today().strftime("%Y-%m-%d"):
                     print(
                         "A payment was already made today for this ticket, cancelling..."
                     )
                     return
 
+                self.cursor.execute(
+                    """
+                    SELECT sum(amount)
+                    FROM payments
+                    WHERE tno = ?;
+                """,
+                    (ticket_number,),
+                )
+
+                (payment_sum,) = self.cursor.fetchone()
+
+                if payment_sum is None:
+                    payment_sum = 0
+
+                if payment_sum >= fine:
+                    print("Ticket is already payed, please try again.")
                 else:
                     break
 
