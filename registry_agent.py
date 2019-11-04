@@ -41,7 +41,14 @@ class RegistryAgent:
                 break
             print("Gender must either be m or f, please try again")
 
-        birth_date = input_util.read_date("Please enter baby's birth date: ")
+        while True:
+            birth_date = input_util.read_date("Please enter baby's birth date: ")
+            bday_date = datetime.strptime(birth_date, "%Y-%m-%d").date()
+            if bday_date > date.today():
+                print("Baby can't be born in the future.")
+            else:
+                break
+
         birth_place = input_util.read_string("Please enter baby's birth place: ")
         mother_fname = input_util.read_name("Please enter mother's first name: ")
         mother_lname = input_util.read_name("Please enter mother's last name: ")
@@ -229,7 +236,7 @@ class RegistryAgent:
             registered_fname != current_fname.lower()
             or registered_lname != current_lname.lower()
         ):
-            print("The vehicle is owned by someone else, transfer cannot be done.")
+            print("The vehicle is owned by someone else, transaction cannot be done.")
             return
 
         new_fname = input_util.read_name("Please enter new owner's first name: ")
@@ -238,10 +245,8 @@ class RegistryAgent:
 
         new_owner = self.__get_person(new_fname, new_lname)
         if new_owner is None:
-            print(
-                "New owner does not exist in database, please enter optional details."
-            )
-            self.__add_person(fname=new_fname, lname=new_lname)
+            print("New owner does not exist in database, transaction cannot be done.")
+            return
 
         self.cursor.execute(
             """
