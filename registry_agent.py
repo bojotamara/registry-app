@@ -106,15 +106,11 @@ class RegistryAgent:
         p1_first_name = input_util.read_name(
             "Please enter first partner's first name: "
         )
-        p1_last_name = input_util.read_name(
-            "Please enter first partner's last name: "
-        )
+        p1_last_name = input_util.read_name("Please enter first partner's last name: ")
         p2_first_name = input_util.read_name(
             "Please enter second partner's first name: "
         )
-        p2_last_name = input_util.read_name(
-            "Please enter second partner's last name: "
-        )
+        p2_last_name = input_util.read_name("Please enter second partner's last name: ")
 
         partner_1 = self.__get_person(p1_first_name, p1_last_name)
         if partner_1 is None:
@@ -225,9 +221,7 @@ class RegistryAgent:
         current_fname = input_util.read_name(
             "Please enter current owner's first name: "
         )
-        current_lname = input_util.read_name(
-            "Please enter current owner's last name: "
-        )
+        current_lname = input_util.read_name("Please enter current owner's last name: ")
 
         registered_fname = current_registration[2].lower()
         registered_lname = current_registration[3].lower()
@@ -394,10 +388,22 @@ class RegistryAgent:
         result = self.cursor.fetchone()
 
         print(
-            f"Lifetime: {result[0]} tickets, {result[1]} demerit notices, {result[2]} demerit points"
+            "Lifetime: "
+            + result[0]
+            + " tickets, "
+            + result[1]
+            + " demerit notices, "
+            + result[2]
+            + " demerit points"
         )
         print(
-            f"Last two years: {result[3]} tickets, {result[4]} demerit notices, {result[5]} demerit points"
+            "Last two years: "
+            + result[3]
+            + "tickets, "
+            + result[4]
+            + "demerit notices, "
+            + result[5]
+            + "demerit points"
         )
 
         if result[0] == 0:
@@ -458,20 +464,20 @@ class RegistryAgent:
     ):
         text = "Enter the person's"
         if fname is None:
-            fname = input_util.read_name(f"{text} first name: ")
+            fname = input_util.read_name(text + " first name: ")
         if lname is None:
-            lname = input_util.read_name(f"{text} last name: ")
+            lname = input_util.read_name(text + " last name: ")
         if bdate is None:
-            bdate = input_util.read_date(f"{text} birth date: ", optional=True)
+            bdate = input_util.read_date(text + " birth date: ", optional=True)
         if bplace is None:
-            bplace = input_util.read_string(f"{text} birth place: ", optional=True)
+            bplace = input_util.read_string(text + " birth place: ", optional=True)
         if address is None:
-            address = input_util.read_string(f"{text} address: ", optional=True)
+            address = input_util.read_string(text + " address: ", optional=True)
 
         phone_regex = re.compile(r"\d{3}-\d{3}-\d{4}$")
         while phone is None:
             phone = input_util.read_string(
-                f"{text} phone number (XXX-XXX-XXXX): ", optional=True
+                text + " phone number (XXX-XXX-XXXX): ", optional=True
             )
             if phone is None:  # optional
                 break
