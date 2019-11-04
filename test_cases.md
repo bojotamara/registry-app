@@ -85,9 +85,9 @@ YYYY-MM-DD
 
 1. Issue a ticket
 - ✅ error for nonexistent registration number
-- ❓ is the violation text optional? I think it shouldn't be
-- 🤷 violation set to today's date if not provided.
-- 🤷 data in the table looks good
+- 🔧 violation text shouldn't be optional
+- ✅ violation set to today's date if not provided.
+- ✅ data in the table looks good
 
 
 2. Find a car owner

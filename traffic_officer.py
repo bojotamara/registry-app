@@ -29,7 +29,7 @@ class TrafficOfficer:
         violation_date = input_util.read_date(
             "Please enter violation date: ", optional=True
         )
-        violation_text = input("Please enter violation text: ")
+        violation_text = input_util.read_string("Please enter violation text: ")
         fine_amount = input_util.read_int("Please enter fine amount: ")
 
         self.cursor.execute(
