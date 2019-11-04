@@ -63,15 +63,15 @@ class TrafficOfficer:
             choice = input("Please choose an option: ")
 
             if choice == "1":
-                make = input("Please enter make: ")
+                make = input_util.read_string("Please enter make: ")
             elif choice == "2":
-                model = input("Please enter model: ")
+                model = input_util.read_string("Please enter model: ")
             elif choice == "3":
-                year = input("Please enter year: ")
+                year = input_util.read_string("Please enter year: ")
             elif choice == "4":
-                color = input("Please enter color: ")
+                color = input_util.read_string("Please enter color: ")
             elif choice == "5":
-                plate = input("Please enter plate: ")
+                plate = input_util.read_string("Please enter plate: ")
             elif choice == "6":
                 break
             else:

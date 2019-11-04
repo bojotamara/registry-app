@@ -482,7 +482,7 @@ class RegistryAgent:
 
         phone_regex = re.compile(r"\d{3}-\d{3}-\d{4}$")
         if phone == "":
-            phone = None;
+            phone = None
             while phone is None:
                 phone = input_util.read_string(
                     text + " phone number (XXX-XXX-XXXX): ", optional=True
