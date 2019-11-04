@@ -35,11 +35,12 @@ comments: I think we should prompt the user on the input date format i.e.
 YYYY-MM-DD
 
 2. Register a marriage
-- 🤷 first partner doesn't exist
-- 🤷 second partner doesn't exist
-- 🤷 both partners exist
+- ✅ first partner doesn't exist
+- ✅ second partner doesn't exist
+- ✅ both don't exist
+- ✅ both partners exist
 - 🔧 person's phone number allows for invalid phone numbers to be entered.
-- 🤷 data in the table looks good
+- ✅ data in the table looks good
 
 3. Renew a vehicle registration
 - ✅ only accepts numerical input
