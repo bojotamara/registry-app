@@ -36,6 +36,7 @@ def read_string(message, optional=False):
         else:
             print("Input required, please try again.")
 
+
 def read_name(message, optional=False):
     while True:
         name = read_string(message, optional)

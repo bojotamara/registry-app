@@ -35,8 +35,8 @@ class RegistryAgent:
         while True:
             gender = input_util.read_string("Please enter baby's gender (M/F): ")
             if (
-                gender.casefold() == "m".casefold()
-                or gender.casefold() == "f".casefold()
+                    gender.casefold() == "m".casefold()
+                    or gender.casefold() == "f".casefold()
             ):
                 break
             print("Gender must either be m or f, please try again")
@@ -187,7 +187,7 @@ class RegistryAgent:
             expiry_date = expiry_date.replace(year=expiry_date.year + 1)
         except ValueError:  # in case of a leap year
             expiry_date + (
-                date(expiry_date.year + 1, 1, 1) - date(expiry_date.year, 1, 1)
+                    date(expiry_date.year + 1, 1, 1) - date(expiry_date.year, 1, 1)
             )
 
         self.cursor.execute(
@@ -232,8 +232,8 @@ class RegistryAgent:
         registered_fname = current_registration[2].lower()
         registered_lname = current_registration[3].lower()
         if (
-            registered_fname != current_fname.lower()
-            or registered_lname != current_lname.lower()
+                registered_fname != current_fname.lower()
+                or registered_lname != current_lname.lower()
         ):
             print("The vehicle is owned by someone else, transfer cannot be done.")
             return
@@ -448,13 +448,13 @@ class RegistryAgent:
         return self.cursor.fetchone()
 
     def __add_person(
-        self,
-        fname: str = None,
-        lname: str = None,
-        bdate: str = None,
-        bplace: str = None,
-        address: str = None,
-        phone: str = None,
+            self,
+            fname: str = None,
+            lname: str = None,
+            bdate: str = None,
+            bplace: str = None,
+            address: str = None,
+            phone: str = None,
     ):
         text = "Enter the person's"
         if fname is None:
