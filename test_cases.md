@@ -45,7 +45,9 @@ YYYY-MM-DD
 3. Renew a vehicle registration
 - ✅ only accepts numerical input
 - ✅ no error when a nonexistent registration number is entered
-- 🤷 data in the table looks good
+- ✅ data in the table looks good
+- ✅ expiry date updates correctly if in past
+- ✅ expiry date updates correctly if in future
 
 4. Process a bill of sale
 - 🔧 no error when a nonexistent registration number is entered 
