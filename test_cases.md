@@ -19,10 +19,10 @@
 1. Register a birth
 - 🔧 restricted name chars
 - 🔧 gender not restricted to M/F
-- 🤷 mother doesn't exist 
-- 🤷 father doesn't exist
+- ✅ mother doesn't exist
+- ✅ father doesn't exist
 - ✅ both parents don't exist
-- 🤷 both parents exist
+- ✅ both parents exist
 - 🔧 baby's name shouldn't already exist in persons table. If so, warn the user
      - results in a stacktrace (unique integrity constraint fails in the db),
        and user is not warned
