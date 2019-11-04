@@ -69,10 +69,6 @@ YYYY-MM-DD
 - ✅ warning if a ticket is already payed
 - ✅ data in the table looks good
 
-comments: maybe if a ticket number is not found, we tell the user that it does
-not exist instead of saying it's invalid, and we say it's invalid if they enter
-non-numerical input
-
 6. Get a driver abstract
 - 🤷 number of tickets, the number of demerit notices, the total number of
   demerit points received both within the past two years and within the

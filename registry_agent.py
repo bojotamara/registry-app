@@ -395,21 +395,21 @@ class RegistryAgent:
 
         print(
             "Lifetime: "
-            + result[0]
+            + str(result[0])
             + " tickets, "
-            + result[1]
+            + str(result[1])
             + " demerit notices, "
-            + result[2]
+            + str(result[2])
             + " demerit points"
         )
         print(
             "Last two years: "
-            + result[3]
-            + "tickets, "
-            + result[4]
-            + "demerit notices, "
-            + result[5]
-            + "demerit points"
+            + str(result[3])
+            + " tickets, "
+            + str(result[4])
+            + " demerit notices, "
+            + str(result[5])
+            + " demerit points"
         )
 
         if result[0] == 0:

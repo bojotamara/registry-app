@@ -43,4 +43,4 @@ def read_name(message, optional=False):
         if re.match("^[A-Za-z0-9-]*$", name):
             return name
         else:
-            print("Only alpha characters and hyphens allowed in a name.")
+            print("Only alphanumeric characters and hyphens allowed in a name.")
