@@ -79,14 +79,13 @@ class TrafficOfficer:
 
         self.cursor.execute(
             """
-            SELECT v.vin, v.make, v.model, v.year, v.color, r.plate
-            FROM vehicles v, registrations r
-            WHERE v.vin = r.vin AND
-                  v.make LIKE ? AND
-                  v.model LIKE ? AND
-                  v.year LIKE ? AND
-                  v.color LIKE ? AND
-                  r.plate LIKE ?;
+            SELECT vin, make, model, year, color, plate
+            FROM vehicles LEFT OUTER JOIN registrations USING (vin)
+            WHERE make LIKE ? AND
+                  model LIKE ? AND
+                  year LIKE ? AND
+                  color LIKE ? AND
+                  IFNULL(plate, '') LIKE ?;
         """,
             (make, model, year, color, plate),
         )
@@ -96,7 +95,7 @@ class TrafficOfficer:
             print("No result.")
         elif len(rows) >= 4:
             for i in range(len(rows)):
-                print(str(i) + ". " + "|".join(str(elem) for elem in rows[i][1:]))
+                print(str(i) + ". " + "|".join(self.__normalize_vehicle_summary(rows[i][1:])))
 
             choice = input_util.read_int("Please choose a result to see full information: ")
             if choice < 0 or choice >= len(rows):
@@ -107,6 +106,15 @@ class TrafficOfficer:
         else:
             for row in rows:
                 self.__print_row(row)
+
+    def __normalize_vehicle_summary(self, row):
+        data = list(row)
+        for ii in range(len(data)):
+            if data[ii] is None:
+                data[ii] = "<this car has no plate number>"
+            else:
+                data[ii] = str(data[ii])
+        return data
 
     def __print_row(self, row):
         self.cursor.execute(
@@ -121,5 +129,8 @@ class TrafficOfficer:
         )
         full_row = self.cursor.fetchone()
 
-        print("|".join(str(elem) for elem in row[1:]), end="|")
-        print("|".join(str(elem) for elem in full_row))
+        print("|".join(self.__normalize_vehicle_summary(row[1:])), end="|")
+        if full_row is None:
+            print("<this car has no owner>")
+        else:
+            print("|".join(str(elem) for elem in full_row))
