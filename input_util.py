@@ -15,8 +15,14 @@ def read_date(message, optional=False):
         message = "(Optional) " + message
     while True:
         user_input = input(message)
+
         if user_input == "" and optional:
             return None
+
+        if not re.match("^\\d{4}-\\d{2}-\\d{2}$", user_input):
+            print("Invalid input, date should be in YYYY-mm-dd format, please try again.")
+            continue
+
         try:
             datetime.strptime(user_input, "%Y-%m-%d")
             return user_input
