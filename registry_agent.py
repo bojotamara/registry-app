@@ -12,8 +12,8 @@ class RegistryAgent:
         print()
         print("Registering a birth")
 
-        first_name = input_util.read_string("Please enter baby's first name: ")
-        last_name = input_util.read_string("Please enter baby's last name: ")
+        first_name = input_util.read_name("Please enter baby's first name: ")
+        last_name = input_util.read_name("Please enter baby's last name: ")
 
         self.cursor.execute(
             """
@@ -41,10 +41,10 @@ class RegistryAgent:
 
         birth_date = input_util.read_date("Please enter baby's birth date: ")
         birth_place = input_util.read_string("Please enter baby's birth place: ")
-        mother_fname = input_util.read_string("Please enter mother's first name: ")
-        mother_lname = input_util.read_string("Please enter mother's last name: ")
-        father_fname = input_util.read_string("Please enter father's first name: ")
-        father_lname = input_util.read_string("Please enter father's last name: ")
+        mother_fname = input_util.read_name("Please enter mother's first name: ")
+        mother_lname = input_util.read_name("Please enter mother's last name: ")
+        father_fname = input_util.read_name("Please enter father's first name: ")
+        father_lname = input_util.read_name("Please enter father's last name: ")
         registration_date = date.today().strftime("%Y-%m-%d")
 
         self.cursor.execute(
@@ -71,10 +71,6 @@ class RegistryAgent:
 
         address = mother[4]
         phone = mother[5]
-        if address is None:
-            address = "NULL"
-        if phone is None:
-            phone = "NULL"
 
         self.__add_person(
             first_name, last_name, birth_date, birth_place, address, phone
@@ -105,16 +101,16 @@ class RegistryAgent:
         print()
         print("Registering a marriage.")
 
-        p1_first_name = input_util.read_string(
+        p1_first_name = input_util.read_name(
             "Please enter first partner's first name: "
         )
-        p1_last_name = input_util.read_string(
+        p1_last_name = input_util.read_name(
             "Please enter first partner's last name: "
         )
-        p2_first_name = input_util.read_string(
+        p2_first_name = input_util.read_name(
             "Please enter second partner's first name: "
         )
-        p2_last_name = input_util.read_string(
+        p2_last_name = input_util.read_name(
             "Please enter second partner's last name: "
         )
 
@@ -209,10 +205,10 @@ class RegistryAgent:
         print("Processing a bill of sale.")
 
         vin = input_util.read_string("Please enter vehicle identification number: ")
-        current_fname = input_util.read_string(
+        current_fname = input_util.read_name(
             "Please enter current owner's first name: "
         )
-        current_lname = input_util.read_string(
+        current_lname = input_util.read_name(
             "Please enter current owner's last name: "
         )
         self.cursor.execute(
@@ -239,8 +235,8 @@ class RegistryAgent:
             print("The vehicle is owned by someone else, transfer cannot be done.")
             return
 
-        new_fname = input_util.read_string("Please enter new owner's first name: ")
-        new_lname = input_util.read_string("Please enter new owner's last name: ")
+        new_fname = input_util.read_name("Please enter new owner's first name: ")
+        new_lname = input_util.read_name("Please enter new owner's last name: ")
         plate = input_util.read_string("Please enter plate number: ")
 
         new_owner = self.__get_person(new_fname, new_lname)
@@ -357,8 +353,8 @@ class RegistryAgent:
         print()
         print("Getting a driver abstract.")
 
-        first_name = input_util.read_string("Please enter first name: ")
-        last_name = input_util.read_string("Please enter last name: ")
+        first_name = input_util.read_name("Please enter first name: ")
+        last_name = input_util.read_name("Please enter last name: ")
         data = {"fname": first_name, "lname": last_name}
 
         self.cursor.execute(
@@ -459,9 +455,9 @@ class RegistryAgent:
     ):
         text = "Enter the person's"
         if fname is None:
-            fname = input_util.read_string(f"{text} first name: ")
+            fname = input_util.read_name(f"{text} first name: ")
         if lname is None:
-            lname = input_util.read_string(f"{text} last name: ")
+            lname = input_util.read_name(f"{text} last name: ")
         if bdate is None:
             bdate = input_util.read_date(f"{text} birth date: ", optional=True)
         if bplace is None:

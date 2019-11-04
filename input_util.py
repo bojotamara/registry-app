@@ -1,4 +1,5 @@
 from datetime import datetime
+import re
 
 
 def read_int(message):
@@ -34,3 +35,11 @@ def read_string(message, optional=False):
             return user_input
         else:
             print("Input required, please try again.")
+
+def read_name(message, optional=False):
+    while True:
+        name = read_string(message, optional)
+        if re.match("^[A-Za-z-]*$", name):
+            return name
+        else:
+            print("Only alpha characters and hyphens allowed in a name.")

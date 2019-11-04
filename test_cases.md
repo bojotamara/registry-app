@@ -17,7 +17,7 @@
 ## Registry Agents
 
 1. Register a birth
-- ❓ are characters like ?\*! allowed for first/last name ?
+- 🔧 restricted name chars
 - 🔧 gender not restricted to M/F
 - 🤷 mother doesn't exist 
 - 🤷 father doesn't exist
