@@ -24,8 +24,6 @@
 - ✅ both parents don't exist
 - ✅ both parents exist
 - 🔧 baby's name shouldn't already exist in persons table. If so, warn the user
-     - results in a stacktrace (unique integrity constraint fails in the db),
-       and user is not warned
   ✅ and don't do the registration
 - 🔧 person's phone number allows for invalid phone numbers to be entered.
 - ✅ data in the table looks good
@@ -67,11 +65,9 @@ YYYY-MM-DD
 5. Process a payment
 - ✅ if a ticket number does not exist, we're told it's invalid
 - 🔧 warn the user that only one payment can be made per day on a ticket.
-  (right now, we get a stack trace on the db's unique integrity constraint
-  failing.)
 - ✅ warning if payment amount exceeds fine
 - ✅ warning if a ticket is already payed
-- 🤷 data in the table looks good
+- ✅ data in the table looks good
 
 comments: maybe if a ticket number is not found, we tell the user that it does
 not exist instead of saying it's invalid, and we say it's invalid if they enter
