@@ -54,6 +54,12 @@ class RegistryAgent:
         father_lname = input_util.read_name("Please enter father's last name: ")
         registration_date = date.today().strftime("%Y-%m-%d")
 
+        if (first_name == mother_fname and last_name == mother_lname) or (
+            first_name == father_fname and last_name == father_lname
+        ):
+            print("A person cannot give birth to him or herself.")
+            return
+
         self.cursor.execute(
             """
             SELECT city
