@@ -18,15 +18,17 @@ class RegistryAgent:
         self.cursor.execute(
             """
             SELECT *
-            FROM births
-            WHERE fname LIKE ?
-            AND lname LIKE ?;
+            FROM births b, persons p
+            WHERE (b.fname LIKE ?
+            AND b.lname LIKE ?) OR
+            (p.fname LIKE ?
+            AND p.lname LIKE ?);
         """,
-            (first_name, last_name),
+            (first_name, last_name, first_name, last_name),
         )
 
         if self.cursor.fetchone() is not None:
-            print("Person with same name already exists. Cancelling registration...")
+            print("\nPerson with same name already exists. Cancelling registration...")
             return
 
         gender = None
