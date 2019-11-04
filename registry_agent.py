@@ -134,7 +134,7 @@ class RegistryAgent:
         p2_last_name = input_util.read_name("Please enter second partner's last name: ")
 
         if (
-            p1_first_name.lower() == p2_first_name.lower
+            p1_first_name.lower() == p2_first_name.lower()
             and p1_last_name.lower() == p2_last_name.lower()
         ):
             print("A person cannot marry him or herself")
