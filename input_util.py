@@ -40,7 +40,7 @@ def read_string(message, optional=False):
 def read_name(message, optional=False):
     while True:
         name = read_string(message, optional)
-        if re.match("^[A-Za-z0-9-]*$", name):
+        if re.match("^[A-Za-z0-9\\- ]*$", name):
             return name
         else:
             print("Only alphanumeric characters and hyphens allowed in a name.")

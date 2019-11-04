@@ -19,10 +19,8 @@ class RegistryAgent:
             """
             SELECT *
             FROM births b, persons p
-            WHERE (b.fname LIKE ?
-            AND b.lname LIKE ?) OR
-            (p.fname LIKE ?
-            AND p.lname LIKE ?);
+            WHERE (b.fname LIKE ? AND b.lname LIKE ?) OR
+                  (p.fname LIKE ? AND p.lname LIKE ?);
         """,
             (first_name, last_name, first_name, last_name),
         )
@@ -482,7 +480,7 @@ class RegistryAgent:
 
         phone_regex = re.compile(r"\d{3}-\d{3}-\d{4}$")
         if phone == "":
-            phone = None;
+            phone = None
             while phone is None:
                 phone = input_util.read_string(
                     text + " phone number (XXX-XXX-XXXX): ", optional=True
