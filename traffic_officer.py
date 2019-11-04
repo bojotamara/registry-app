@@ -80,7 +80,13 @@ class TrafficOfficer:
         self.cursor.execute(
             """
             SELECT vin, make, model, year, color, plate
-            FROM vehicles LEFT OUTER JOIN registrations USING (vin)
+            FROM (
+                  SELECT regno, vin, make, model, year, color, plate
+                  FROM vehicles LEFT OUTER JOIN registrations USING (vin)
+                  UNION
+                  SELECT regno, vin, make, model, year, color, plate
+                  FROM registrations LEFT OUTER JOIN vehicles USING (vin)
+            )
             WHERE make LIKE ? AND
                   model LIKE ? AND
                   year LIKE ? AND

@@ -180,4 +180,8 @@ insert into demeritNotices values ('2019-10-05', 'Q5', 'Multi20', 7, 'Drunk Driv
 -- ------------- --
 -- Extended data --
 -- ------------- --
+
+-- Another registration for the same car
+insert into registrations values (399, '2020-04-26','2025-07-25', 'Z7F9J2','U600', 'Q5', 'Multi20');
+
 insert into tickets values (419,313,10,'speeding 2','2019-08-20');
