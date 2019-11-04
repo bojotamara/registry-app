@@ -9,3 +9,7 @@ Tamara Bojovic (tbojovic)
 
 Collaboration:
 We did not collaborate with anyone else.
+
+Usage:
+Python 3.5 is required, run the following command to start.
+python3 registry.py <path to database file>
