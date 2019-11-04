@@ -49,8 +49,12 @@ def main(dbname):
     print("Welcome to the Registry!")
 
     print("Please login.")
-    username = input("Username: ")
-    password = getpass("Password: ")
+    try:
+        username = input("Username: ")
+        password = getpass("Password: ")
+    except KeyboardInterrupt:
+        print("\nLogin cancelled.")
+        exit(1)
 
     user_data = login(username, password)
     if user_data is None:

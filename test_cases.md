@@ -9,7 +9,7 @@
 - ✅registry agent
 - ✅ traffic officer
 - ✅ invalid login
-- ❓ ^C exits the program but results in a stacktrace
+- ✅ ^C exits the program but results in a stacktrace
 
 ## General
 - ✅ case insensitivity
