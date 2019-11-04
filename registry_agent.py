@@ -222,7 +222,7 @@ class RegistryAgent:
 
         current_registration = self.cursor.fetchone()
         if current_registration is None:
-            print("The registration number does not exist.")
+            print("The vehicle identification number does not exist.")
             return
 
         current_fname = input_util.read_name(
@@ -241,12 +241,13 @@ class RegistryAgent:
 
         new_fname = input_util.read_name("Please enter new owner's first name: ")
         new_lname = input_util.read_name("Please enter new owner's last name: ")
-        plate = input_util.read_string("Please enter plate number: ")
 
         new_owner = self.__get_person(new_fname, new_lname)
         if new_owner is None:
             print("New owner does not exist in database, transaction cannot be done.")
             return
+
+        plate = input_util.read_string("Please enter plate number: ")
 
         self.cursor.execute(
             """
@@ -261,7 +262,7 @@ class RegistryAgent:
             INSERT INTO registrations
             VALUES ((SELECT MAX(regno) + 1 FROM registrations), DATE('now'), DATE('now', '+1 year'), ?, ?, ?, ?);
         """,
-            (plate, current_registration[1], new_fname, new_lname),
+            (plate, current_registration[1], new_owner[0], new_owner[1]),
         )
         self.connection.commit()
 

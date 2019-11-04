@@ -51,18 +51,17 @@ YYYY-MM-DD
 
 4. Process a bill of sale
 - 🔧 no error when a nonexistent registration number is entered 
-      ? I'm confused, there seems to be an error now
-- 🤷 if the name of the current owner (that is provided) does not match the
+- ✅ if the name of the current owner (that is provided) does not match the
   name of the most recent owner of the car in the system, the transfer cannot
   be made
-- 🤷 When the transfer can be made, the expiry date of the current registration
+- ✅ When the transfer can be made, the expiry date of the current registration
   is set to today's date and a new registration under the new owner's name is
   recorded with the registration date and the expiry date set by the system to
   today's date and a year after today's date respectively. 
-- 🤷 a unique registration number should be assigned by the system to the new
+- ✅ a unique registration number should be assigned by the system to the new
   registration
-- 🤷 data in the table looks good
-- 🤷 if the name of the new owener is not in the database, the transaction
+- ✅ data in the table looks good
+- ✅ if the name of the new owener is not in the database, the transaction
   cannot be made
 
 5. Process a payment
