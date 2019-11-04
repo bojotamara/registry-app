@@ -35,8 +35,8 @@ class RegistryAgent:
         while True:
             gender = input_util.read_string("Please enter baby's gender (M/F): ")
             if (
-                    gender.casefold() == "m".casefold()
-                    or gender.casefold() == "f".casefold()
+                gender.casefold() == "m".casefold()
+                or gender.casefold() == "f".casefold()
             ):
                 break
             print("Gender must either be m or f, please try again")
@@ -48,7 +48,6 @@ class RegistryAgent:
                 print("Baby can't be born in the future.")
             else:
                 break
-
 
         birth_place = input_util.read_string("Please enter baby's birth place: ")
         mother_fname = input_util.read_name("Please enter mother's first name: ")
@@ -114,15 +113,11 @@ class RegistryAgent:
         p1_first_name = input_util.read_name(
             "Please enter first partner's first name: "
         )
-        p1_last_name = input_util.read_name(
-            "Please enter first partner's last name: "
-        )
+        p1_last_name = input_util.read_name("Please enter first partner's last name: ")
         p2_first_name = input_util.read_name(
             "Please enter second partner's first name: "
         )
-        p2_last_name = input_util.read_name(
-            "Please enter second partner's last name: "
-        )
+        p2_last_name = input_util.read_name("Please enter second partner's last name: ")
 
         partner_1 = self.__get_person(p1_first_name, p1_last_name)
         if partner_1 is None:
@@ -195,7 +190,7 @@ class RegistryAgent:
             expiry_date = expiry_date.replace(year=expiry_date.year + 1)
         except ValueError:  # in case of a leap year
             expiry_date + (
-                    date(expiry_date.year + 1, 1, 1) - date(expiry_date.year, 1, 1)
+                date(expiry_date.year + 1, 1, 1) - date(expiry_date.year, 1, 1)
             )
 
         self.cursor.execute(
@@ -233,15 +228,13 @@ class RegistryAgent:
         current_fname = input_util.read_name(
             "Please enter current owner's first name: "
         )
-        current_lname = input_util.read_name(
-            "Please enter current owner's last name: "
-        )
+        current_lname = input_util.read_name("Please enter current owner's last name: ")
 
         registered_fname = current_registration[2].lower()
         registered_lname = current_registration[3].lower()
         if (
-                registered_fname != current_fname.lower()
-                or registered_lname != current_lname.lower()
+            registered_fname != current_fname.lower()
+            or registered_lname != current_lname.lower()
         ):
             print("The vehicle is owned by someone else, transaction cannot be done.")
             return
@@ -454,13 +447,13 @@ class RegistryAgent:
         return self.cursor.fetchone()
 
     def __add_person(
-            self,
-            fname: str = None,
-            lname: str = None,
-            bdate: str = None,
-            bplace: str = None,
-            address: str = None,
-            phone: str = None,
+        self,
+        fname: str = None,
+        lname: str = None,
+        bdate: str = None,
+        bplace: str = None,
+        address: str = None,
+        phone: str = None,
     ):
         text = "Enter the person's"
         if fname is None:

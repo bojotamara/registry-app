@@ -95,9 +95,15 @@ class TrafficOfficer:
             print("No result.")
         elif len(rows) >= 4:
             for i in range(len(rows)):
-                print(str(i) + ". " + "|".join(self.__normalize_vehicle_summary(rows[i][1:])))
+                print(
+                    str(i)
+                    + ". "
+                    + "|".join(self.__normalize_vehicle_summary(rows[i][1:]))
+                )
 
-            choice = input_util.read_int("Please choose a result to see full information: ")
+            choice = input_util.read_int(
+                "Please choose a result to see full information: "
+            )
             if choice < 0 or choice >= len(rows):
                 print("Invalid choice.")
                 return
