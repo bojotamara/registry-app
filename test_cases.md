@@ -103,7 +103,7 @@ non-numerical input
 - ✅ search by model
 - ✅ search by year
 - 🤷 combinations of the above
-- ❌ when more than 4 results are returned, the menu isn't printed out, and
+- 🔧 when more than 4 results are returned, the menu isn't printed out, and
   "Please choose an option is printed, so the user can get confused. 
   i.e. for example:
   ```
@@ -128,13 +128,13 @@ non-numerical input
   ```
 - ❓when no search parameters are entered, all vehicles are returned. Is this
   what we want?
-- ❌ when 2 consecutive searches are done with empty parameters, sometimes we
+- 🔧 when 2 consecutive searches are done with empty parameters, sometimes we
   get 17 results (all vehicles, and when run again, we get 
   ```
   Kia|Cube|2013|red|Z7F9J2|1913-01-26|2018-07-25|Amalia|Kane
   ```
   , and then 17 results if we search again
-- ❌ overall pretty buggy when more than 4 results returned. Search can get
+- 🔧 overall pretty buggy when more than 4 results returned. Search can get
   executed even though 6 is not entered
   ```
   1. Enter make

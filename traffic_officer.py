@@ -98,7 +98,7 @@ class TrafficOfficer:
             for i in range(len(rows)):
                 print(str(i) + ". " + "|".join(str(elem) for elem in rows[i][1:]))
 
-            choice = input_util.read_int("Please choose an option: ")
+            choice = input_util.read_int("Please choose a result to see full information: ")
             if choice < 0 or choice >= len(rows):
                 print("Invalid choice.")
                 return
