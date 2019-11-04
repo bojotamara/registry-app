@@ -20,7 +20,9 @@ def read_date(message, optional=False):
             return None
 
         if not re.match("^\\d{4}-\\d{2}-\\d{2}$", user_input):
-            print("Invalid input, date should be in YYYY-mm-dd format, please try again.")
+            print(
+                "Invalid input, date should be in YYYY-mm-dd format, please try again."
+            )
             continue
 
         try:

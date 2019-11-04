@@ -54,12 +54,19 @@ class RegistryAgent:
         father_lname = input_util.read_name("Please enter father's last name: ")
         registration_date = date.today().strftime("%Y-%m-%d")
 
-        if (first_name.lower() == mother_fname.lower() and last_name.lower() == mother_lname.lower()) or (
-            first_name.lower() == father_fname.lower() and last_name.lower() == father_lname.lower()
+        if (
+            first_name.lower() == mother_fname.lower()
+            and last_name.lower() == mother_lname.lower()
+        ) or (
+            first_name.lower() == father_fname.lower()
+            and last_name.lower() == father_lname.lower()
         ):
             print("A person cannot give birth to him or herself.")
             return
-        elif (mother_fname.lower() == father_fname.lower() and mother_lname.lower() == father_lname.lower()):
+        elif (
+            mother_fname.lower() == father_fname.lower()
+            and mother_lname.lower() == father_lname.lower()
+        ):
             print("A person cannot have the same mother and father.")
             return
 
