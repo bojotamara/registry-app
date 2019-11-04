@@ -1,6 +1,6 @@
 Registry App
 
-A simply command line registry
+A simple command line registry
 
 Team members:
 Arun Woosaree  (awoosare)
