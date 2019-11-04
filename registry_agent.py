@@ -455,37 +455,39 @@ class RegistryAgent:
 
     def __add_person(
             self,
-            fname: str = None,
-            lname: str = None,
-            bdate: str = None,
-            bplace: str = None,
-            address: str = None,
-            phone: str = None,
+            fname: str = "",
+            lname: str = "",
+            bdate: str = "",
+            bplace: str = "",
+            address: str = "",
+            phone: str = "",
     ):
         text = "Enter the person's"
-        if fname is None:
+        if fname == "":
             fname = input_util.read_name(f"{text} first name: ")
-        if lname is None:
+        if lname == "":
             lname = input_util.read_name(f"{text} last name: ")
-        if bdate is None:
+        if bdate == "":
             bdate = input_util.read_date(f"{text} birth date: ", optional=True)
-        if bplace is None:
+        if bplace == "":
             bplace = input_util.read_string(f"{text} birth place: ", optional=True)
-        if address is None:
+        if address == "":
             address = input_util.read_string(f"{text} address: ", optional=True)
 
         phone_regex = re.compile(r"\d{3}-\d{3}-\d{4}$")
-        while phone is None:
-            phone = input_util.read_string(
-                f"{text} phone number (XXX-XXX-XXXX): ", optional=True
-            )
-            if phone is None:  # optional
-                break
-            if not phone_regex.match(phone):
-                phone = None
-                print(
-                    "Phone number entered in wrong format, please try again, or leave blank"
+        if phone == "":
+            phone = None
+            while phone is None:
+                phone = input_util.read_string(
+                    f"{text} phone number (XXX-XXX-XXXX): ", optional=True
                 )
+                if phone is None:  # optional
+                    break
+                if not phone_regex.match(phone):
+                    phone = None
+                    print(
+                        "Phone number entered in wrong format, please try again, or leave blank"
+                    )
 
         self.cursor.execute(
             """
