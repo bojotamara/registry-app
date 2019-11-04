@@ -235,7 +235,7 @@ class RegistryAgent:
                 registered_fname != current_fname.lower()
                 or registered_lname != current_lname.lower()
         ):
-            print("The vehicle is owned by someone else, transfer cannot be done.")
+            print("The vehicle is owned by someone else, transaction cannot be done.")
             return
 
         new_fname = input_util.read_name("Please enter new owner's first name: ")
@@ -244,10 +244,8 @@ class RegistryAgent:
 
         new_owner = self.__get_person(new_fname, new_lname)
         if new_owner is None:
-            print(
-                "New owner does not exist in database, please enter optional details."
-            )
-            self.__add_person(fname=new_fname, lname=new_lname)
+            print("New owner does not exist in database, transaction cannot be done.")
+            return
 
         self.cursor.execute(
             """
