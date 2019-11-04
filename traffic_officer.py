@@ -121,11 +121,11 @@ class TrafficOfficer:
 
     def __normalize_vehicle_summary(self, row):
         data = list(row)
-        for ii in range(len(data)):
-            if data[ii] is None:
-                data[ii] = "<this car has no plate number>"
+        for i in range(len(data)):
+            if data[i] is None:
+                data[i] = "<this car has no plate number>"
             else:
-                data[ii] = str(data[ii])
+                data[i] = str(data[i])
         return data
 
     def __print_row(self, row):
