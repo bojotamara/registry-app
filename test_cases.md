@@ -43,8 +43,7 @@ YYYY-MM-DD
 
 3. Renew a vehicle registration
 - ✅ only accepts numerical input
-- 🤷🔧❌ no error when a nonexistent registration number is entered
-      ? I'm confused, there seems to be an error now
+- ✅ no error when a nonexistent registration number is entered
 - 🤷 data in the table looks good
 
 4. Process a bill of sale
