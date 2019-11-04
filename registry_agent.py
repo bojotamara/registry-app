@@ -207,12 +207,6 @@ class RegistryAgent:
         print("Processing a bill of sale.")
 
         vin = input_util.read_string("Please enter vehicle identification number: ")
-        current_fname = input_util.read_name(
-            "Please enter current owner's first name: "
-        )
-        current_lname = input_util.read_name(
-            "Please enter current owner's last name: "
-        )
         self.cursor.execute(
             """
             SELECT regno, vin, fname, lname
@@ -227,6 +221,13 @@ class RegistryAgent:
         if current_registration is None:
             print("The registration number does not exist.")
             return
+
+        current_fname = input_util.read_name(
+            "Please enter current owner's first name: "
+        )
+        current_lname = input_util.read_name(
+            "Please enter current owner's last name: "
+        )
 
         registered_fname = current_registration[2].lower()
         registered_lname = current_registration[3].lower()

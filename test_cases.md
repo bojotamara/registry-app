@@ -47,7 +47,7 @@ YYYY-MM-DD
 - 🤷 data in the table looks good
 
 4. Process a bill of sale
-- 🤷🔧❌ no error when a nonexistent registration number is entered 
+- 🔧 no error when a nonexistent registration number is entered 
       ? I'm confused, there seems to be an error now
 - 🤷 if the name of the current owner (that is provided) does not match the
   name of the most recent owner of the car in the system, the transfer cannot
