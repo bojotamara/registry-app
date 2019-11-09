@@ -1,0 +1,565 @@
+Welcome to Ubuntu 16.04.6 LTS (GNU/Linux 4.15.0-66-generic x86_64)
+
+Department of Computing Science
+University of Alberta
+
+Unauthorized use is prohibited.
+
+Problem reports can be made using mail to ist@ualberta.ca
+or https://www.ualberta.ca/computing-science/links-and-resources/technical-support
+
+haiyang3@ug05:~>ls
+291assign2  291labs  distwc-test-cases  dragonshell  mapreduce  registry-app
+haiyang3@ug05:~>cd registry-app/
+haiyang3@ug05:~/registry-app>ls
+README.txt  __pycache__    prjcode.tgz  registry.py        traffic_officer.py
+Report.pdf  input_util.py  registry.db  registry_agent.py
+haiyang3@ug05:~/registry-app>nano test-data.sql
+haiyang3@ug05:~/registry-app>sqlite3 test-data.db <test-data.sql
+Error: near line 4: no such table: persons
+Error: near line 5: no such table: persons
+Error: near line 6: no such table: persons
+Error: near line 7: no such table: persons
+Error: near line 8: no such table: persons
+Error: near line 9: no such table: persons
+Error: near line 10: no such table: persons
+Error: near line 11: no such table: persons
+Error: near line 12: no such table: persons
+Error: near line 13: no such table: persons
+Error: near line 14: no such table: persons
+Error: near line 15: no such table: persons
+Error: near line 18: no such table: births
+Error: near line 19: no such table: births
+Error: near line 22: no such table: marriages
+Error: near line 23: no such table: marriages
+Error: near line 26: no such table: vehicles
+Error: near line 27: no such table: vehicles
+Error: near line 28: no such table: vehicles
+Error: near line 29: no such table: vehicles
+Error: near line 30: no such table: vehicles
+Error: near line 31: no such table: vehicles
+Error: near line 32: no such table: vehicles
+Error: near line 33: no such table: vehicles
+Error: near line 34: no such table: vehicles
+Error: near line 35: no such table: vehicles
+Error: near line 38: no such table: registrations
+Error: near line 39: no such table: registrations
+Error: near line 40: no such table: registrations
+Error: near line 41: no such table: registrations
+Error: near line 42: no such table: registrations
+Error: near line 43: no such table: registrations
+Error: near line 44: no such table: registrations
+Error: near line 45: no such table: registrations
+Error: near line 46: no such table: registrations
+Error: near line 47: no such table: registrations
+Error: near line 48: no such table: registrations
+Error: near line 51: no such table: tickets
+Error: near line 52: no such table: tickets
+Error: near line 53: no such table: tickets
+Error: near line 54: no such table: tickets
+Error: near line 55: no such table: tickets
+Error: near line 56: no such table: tickets
+Error: near line 57: no such table: tickets
+Error: near line 58: no such table: tickets
+Error: near line 59: no such table: tickets
+Error: near line 60: no such table: tickets
+Error: near line 61: no such table: tickets
+Error: near line 64: no such table: demeritNotices
+Error: near line 65: no such table: demeritNotices
+Error: near line 66: no such table: demeritNotices
+Error: near line 67: no such table: demeritNotices
+Error: near line 68: no such table: demeritNotices
+Error: near line 69: no such table: demeritNotices
+Error: near line 70: no such table: demeritNotices
+Error: near line 73: no such table: payments
+Error: near line 74: no such table: payments
+Error: near line 77: no such table: users
+Error: near line 78: no such table: users
+haiyang3@ug05:~/registry-app>ls
+README.txt  __pycache__    prjcode.tgz  registry.py        test-data.db   traffic_officer.py
+Report.pdf  input_util.py  registry.db  registry_agent.py  test-data.sql
+haiyang3@ug05:~/registry-app>rm test-data.db
+rm: remove regular empty file 'test-data.db'? y
+haiyang3@ug05:~/registry-app>nano test-schema.sql
+haiyang3@ug05:~/registry-app>sqlite3 test-data.db < test-schema.sql
+haiyang3@ug05:~/registry-app>sqlite3 test-data.db < test-data.sql
+haiyang3@ug05:~/registry-app>python3 registry.py test-data.db
+Welcome to the Registry!
+Please login.
+Username: 1
+Password:
+Login failed.
+haiyang3@ug05:~/registry-app>python3 registry.py test-data.db
+Welcome to the Registry!
+Please login.
+Username: 1
+Password:
+
+Welcome back, traffic officer!
+Press CTRL-C at any time to return to this menu.
+1. Issue a ticket
+2. Find a car owner
+3. Logout and exit
+Please choose an option: 3
+
+See you next time!
+haiyang3@ug05:~/registry-app>python3 registry.py test-data.db
+Welcome to the Registry!
+Please login.
+Username: 2
+Password:
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: 1
+
+Registering a birth
+Please enter baby's first name: Tom
+Please enter baby's last name: Doe
+Please enter baby's gender (M/F): M
+Please enter baby's birth date: 2019-11-01
+Please enter baby's birth place: Edmonton
+Please enter mother's first name: John
+Please enter mother's last name: Doe^C
+Current function exited, going back to main menu.
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: 1
+
+Registering a birth
+Please enter baby's first name: Tom
+Please enter baby's last name: Doe
+Please enter baby's gender (M/F): M
+Please enter baby's birth date: 2019-11-01
+Please enter baby's birth place: Edmonton
+Please enter mother's first name: Jane
+Please enter mother's last name: Watch
+Please enter father's first name: John
+Please enter father's last name: Doe
+Birth registered.
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: 1
+
+Registering a birth
+Please enter baby's first name: Janet
+Please enter baby's last name: Fox
+Please enter baby's gender (M/F): f
+Please enter baby's birth date: 2018-10-11
+Please enter baby's birth place: Calgary
+Please enter mother's first name: Marian
+Please enter mother's last name: Lam
+Please enter father's first name: Alex
+Please enter father's last name: Fox
+Mother does not exist in database, please enter her details.
+(Optional) Enter the person's birth date:
+(Optional) Enter the person's birth place:
+(Optional) Enter the person's address:
+(Optional) Enter the person's phone number (XXX-XXX-XXXX): 345-123-4356
+Birth registered.
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: 2
+
+Registering a marriage.
+Please enter first partner's first name: Susan
+Please enter first partner's last name: Wayne
+Please enter second partner's first name: Alex
+Please enter second partner's last name: Fox
+Marriage registered.
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: 2
+
+Registering a marriage.
+Please enter first partner's first name: Jane
+Please enter first partner's last name: Watch
+Please enter second partner's first name: Ahmed
+Please enter second partner's last name: Taleb
+Second partner does not exist in database, please enter optional details.
+(Optional) Enter the person's birth date:
+(Optional) Enter the person's birth place:
+(Optional) Enter the person's address:
+(Optional) Enter the person's phone number (XXX-XXX-XXXX):
+Marriage registered.
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: 3
+
+Renewing a vehicle registration.
+Please enter the vehicle registration number: 1
+Vehicle registration renewed.
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: 3
+
+Renewing a vehicle registration.
+Please enter the vehicle registration number: 2
+Vehicle registration renewed.
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: 4
+
+Processing a bill of sale.
+Please enter vehicle identification number: 126
+Please enter current owner's first name: Farnaz
+Please enter current owner's last name: Darbi
+The vehicle is owned by someone else, transaction cannot be done.
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: ^[[A^[[B^[[B
+Invalid choice, please try again.
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: 4
+
+Processing a bill of sale.
+Please enter vehicle identification number: 126
+Please enter current owner's first name: Farnaz
+Please enter current owner's last name: Darabi
+Please enter new owner's first name: Alex
+Please enter new owner's last name: Fox
+Please enter plate number: RD54N
+Bill of sale processed.
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: 4
+
+Processing a bill of sale.
+Please enter vehicle identification number: 127
+Please enter current owner's first name: Roger
+Please enter current owner's last name: Fox
+The vehicle is owned by someone else, transaction cannot be done.
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: 5
+
+Processing a payment.
+Please enter ticket number: 3
+Fine: 300
+Amount paid: 0
+Please enter the payment amount: 150
+Ticket payment processed.
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: 5
+
+Processing a payment.
+Please enter ticket number: 2
+Fine: 120
+Amount paid: 80
+Please enter the payment amount: 40
+Ticket payment processed.
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: 5
+
+Processing a payment.
+Please enter ticket number: 1
+Fine: 200
+Amount paid: 70
+Please enter the payment amount: 180
+Payment amount exceeds fine, please try again.
+Please enter the payment amount: 180
+Payment amount exceeds fine, please try again.
+Please enter the payment amount: ^C
+Current function exited, going back to main menu.
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: 6
+
+Getting a driver abstract.
+Please enter first name: Jian
+Please enter last name: Jin
+Lifetime: 7 tickets, 3 demerit notices, 45 demerit points
+Last two years: 5 tickets, 2 demerit notices, 25 demerit points
+1. Show tickets
+2. Exit
+Please choose an option: 1
+8|2019-11-01|Red Light|120|4|Toyota|Raw 4
+10|2019-03-19|Speeding|250|4|Toyota|Raw 4
+5|2019-01-08|Speeding|100|4|Toyota|Raw 4
+6|2018-09-12|Parking|80|4|Toyota|Raw 4
+9|2018-02-13|Speeding|130|4|Toyota|Raw 4
+More tickets not shown, please select show tickets to show more.
+1. Show tickets
+2. Exit
+Please choose an option: 1
+7|2017-10-12|Speeding|90|4|Toyota|Raw 4
+11|2016-07-18|Parking|100|5|Ford|Fiesta
+
+Welcome back, registry agent!
+Press CTRL-C at any time to return to this menu.
+1. Register a birth
+2. Register a marriage
+3. Renew a vehicle registration
+4. Process a bill of sale
+5. Process a payment
+6. Get a driver abstract
+7. Logout and exit
+Please choose an option: 7
+
+See you next time!
+haiyang3@ug05:~/registry-app>python3 registry.py test-data.db
+Welcome to the Registry!
+Please login.
+Username: 1
+Password:
+
+Welcome back, traffic officer!
+Press CTRL-C at any time to return to this menu.
+1. Issue a ticket
+2. Find a car owner
+3. Logout and exit
+Please choose an option: 1
+
+Issuing a ticket.
+Please enter registration number: 6
+Alex|Fox|Lexus|NX300|2018|Silver
+(Optional) Please enter violation date: 2019-10-31
+Please enter violation text: Speeding
+Please enter fine amount: 150
+Ticket Issued.
+
+Welcome back, traffic officer!
+Press CTRL-C at any time to return to this menu.
+1. Issue a ticket
+2. Find a car owner
+3. Logout and exit
+Please choose an option: 1
+
+Issuing a ticket.
+Please enter registration number: 6
+Alex|Fox|Lexus|NX300|2018|Silver
+(Optional) Please enter violation date:
+Please enter violation text: Parking
+Please enter fine amount: 100
+Ticket Issued.
+
+Welcome back, traffic officer!
+Press CTRL-C at any time to return to this menu.
+1. Issue a ticket
+2. Find a car owner
+3. Logout and exit
+Please choose an option: 2
+
+Finding a car owner.
+1. Enter make
+2. Enter model
+3. Enter year
+4. Enter color
+5. Enter plate
+6. Execute search
+Please choose an option: 1
+Please enter make: Toyota
+1. Enter make
+2. Enter model
+3. Enter year
+4. Enter color
+5. Enter plate
+6. Execute search
+Please choose an option: 6
+0. Toyota|Camry|2017|Blue|U5RFC
+1. Toyota|Raw 4|2017|Black|ABN76
+2. Toyota|Camry|2011|Blue|GFV6R
+3. Toyota|Raw 4|2014|Black|FD543
+4. Toyota|Crown|1996|Red|HB65C
+Please choose a result to see full information: 0
+Toyota|Camry|2017|Blue|U5RFC|2017-11-29|2021-11-29|Roger|Peng
+
+Welcome back, traffic officer!
+Press CTRL-C at any time to return to this menu.
+1. Issue a ticket
+2. Find a car owner
+3. Logout and exit
+Please choose an option: 2
+
+Finding a car owner.
+1. Enter make
+2. Enter model
+3. Enter year
+4. Enter color
+5. Enter plate
+6. Execute search
+Please choose an option: 1
+Please enter make: Toyota
+1. Enter make
+2. Enter model
+3. Enter year
+4. Enter color
+5. Enter plate
+6. Execute search
+Please choose an option: 3
+Please enter year: 2017
+1. Enter make
+2. Enter model
+3. Enter year
+4. Enter color
+5. Enter plate
+6. Execute search
+Please choose an option: 6
+Toyota|Camry|2017|Blue|U5RFC|2017-11-29|2021-11-29|Roger|Peng
+Toyota|Raw 4|2017|Black|ABN76|2019-01-02|2020-01-02|Jian|Jin
+
+Welcome back, traffic officer!
+Press CTRL-C at any time to return to this menu.
+1. Issue a ticket
+2. Find a car owner
+3. Logout and exit
+Please choose an option: 2
+
+Finding a car owner.
+1. Enter make
+2. Enter model
+3. Enter year
+4. Enter color
+5. Enter plate
+6. Execute search
+Please choose an option: 1
+Please enter make: toyoTa
+1. Enter make
+2. Enter model
+3. Enter year
+4. Enter color
+5. Enter plate
+6. Execute search
+Please choose an option: 3
+Please enter year: 2017
+1. Enter make
+2. Enter model
+3. Enter year
+4. Enter color
+5. Enter plate
+6. Execute search
+Please choose an option: 6
+Toyota|Camry|2017|Blue|U5RFC|2017-11-29|2021-11-29|Roger|Peng
+Toyota|Raw 4|2017|Black|ABN76|2019-01-02|2020-01-02|Jian|Jin
+
+Welcome back, traffic officer!
+Press CTRL-C at any time to return to this menu.
+1. Issue a ticket
+2. Find a car owner
+3. Logout and exit
+Please choose an option: 3
+
+See you next time!
+haiyang3@ug05:~/registry-app>
